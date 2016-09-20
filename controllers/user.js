@@ -3,14 +3,41 @@ var db = require('../models')
 var passport = require('../config/ppConfig')
 var isLoggedIn = require('../middleware/isLoggedIn')
 var router = express.Router()
+var multer  = require('multer')
+var upload = multer({ dest: 'uploads/' })
 
-router.get('/', function (req, res) {
-  console.log(req.session)
-  res.render('user/index')
+router.get('/', isLoggedIn, function (req, res) {
+  db.user.findAll().then(function(allUsers) {
+    var focusList = []
+    allUsers.forEach(function(user){
+      focusList.push(user.focus)
+    })
+    focusList.sort()
+    console.log(focusList);
+    // console.log("foundUser: ",foundUser);
+    // users will be an array of all User instances
+      res.render('user/index', {focus: focusList})
+  })
+
+  // res.render('user/index')
 })
 
-router.get('/profile', function (req, res) {
-  res.render('user/profile')
+router.get('/profile', isLoggedIn, function (req, res) {
+  db.user.find({
+    where: {id: req.session.passport.user}
+    }).then(function (foundUser) {
+      db.user.findAll().then(function(allUsers) {
+        var focusList = []
+        allUsers.forEach(function(user){
+          focusList.push(user.focus)
+        })
+        focusList.sort()
+        console.log(focusList);
+        // console.log("foundUser: ",foundUser);
+        // users will be an array of all User instances
+          res.render('user/profile', {focus: focusList})
+      })
+    })
 })
 
 router.post('/profile', function (req, res) {
@@ -18,10 +45,10 @@ router.post('/profile', function (req, res) {
   db.user.update({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
-    // focus: req.body.focus
-    bio: req.body.bio
-    // skills: req.body.skills,
-    // link: req.body.link
+    focus: req.body.focus,
+    bio: req.body.bio,
+    skills: req.body.skills,
+    link: req.body.link
   }, {
     where: {
       email: req.body.email
@@ -30,5 +57,13 @@ router.post('/profile', function (req, res) {
     res.redirect('/user/profile')
   })
 })
+
+
+router.post('/profile/upload', upload.single('avatar'), function (req, res, next) {
+  console.log("req.file:",req.file)
+  // req.file is the `avatar` file
+  // req.body will hold the text fields, if there were any
+})
+
 
 module.exports = router

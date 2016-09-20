@@ -36,22 +36,19 @@ module.exports = {
         type: Sequelize.STRING
       },
       skills: {
-        type: Sequelize.ARRAY(DataTypes.STRING)
+        type: Sequelize.STRING
       },
       profileImg: {
         type: Sequelize.TEXT
       },
-      imgs: {
-        type: Sequelize.ARRAY(DataTypes.TEXT)
+      img1: {
+        type: Sequelize.TEXT
       },
-      friends: {
-        type: Sequelize.ARRAY(DataTypes.STRING)
+      img2: {
+        type: Sequelize.TEXT
       },
-      reqsIn: {
-        type: Sequelize.ARRAY(DataTypes.STRING)
-      },
-      reqsOut: {
-        type: Sequelize.ARRAY(DataTypes.STRING)
+      img3: {
+        type: Sequelize.TEXT
       },
       createdAt: {
         allowNull: false,

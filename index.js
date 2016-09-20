@@ -8,12 +8,15 @@ var session = require('express-session')
 var passport = require('./config/ppConfig')
 var isLoggedIn = require('./middleware/isLoggedIn')
 var flash = require('connect-flash')
+var multer  = require('multer')
+
 
 app.set('view engine', 'ejs')
 app.use(require('morgan')('dev'))
 app.use(ejsLayouts)
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(express.static(__dirname + '/static/'))
+var upload = multer({ dest: 'uploads/' })
 
 app.use(session({
   secret: process.env.SESSION_SECRET || "secret message",
@@ -34,13 +37,13 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.get('/', isLoggedIn, function(req, res) {
-  res.redirect('/user/');
-});
-
 app.use('/auth', require('./controllers/auth'))
 app.use('/user', require('./controllers/user'))
 app.use('/guest', require('./controllers/guest'))
+
+app.get('/', isLoggedIn, function(req, res) {
+  res.redirect('/user/');
+});
 
 var server = app.listen(process.env.PORT || 3000)
 

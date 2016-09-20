@@ -12,7 +12,6 @@ router.get('/signup', function(req, res) {
 });
 
 router.post('/signup', function(req, res) {
-  console.log(req.body.email)
   db.user.findOrCreate({
     where: { email: req.body.email },
     defaults: {
@@ -44,7 +43,7 @@ router.get('/login', function(req, res) {
 });
 
 router.post('/login', passport.authenticate('local', {
-  successRedirect: '/',
+  successRedirect: '/user',
   failureRedirect: '/auth/login',
   failureFlash: 'Invalid username and/or password',
   successFlash: 'You have logged in'
@@ -54,7 +53,7 @@ router.get('/logout', function(req, res) {
   req.logout();
   console.log('logged out');
   req.flash('success', 'You have logged out');
-  res.redirect('/');
+  res.redirect('/auth/');
 });
 
 module.exports = router;

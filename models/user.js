@@ -53,28 +53,21 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: true,
       notEmpty: false,
       validate: {
-        isUrl: true
+        isUrl: true,
+        len: {
+          msg: 'Insert valid link'
+        }
+
       }
     },
     focus: DataTypes.STRING,
-    bio: {
-      type: DataTypes.STRING,
-      allowNull: true,
-      notEmpty: false,   
-      validate: {
-        len: {
-          args: [1, 140],
-          msg: 'Bio must be between 1 and 99 characters'
-        }
-      }
-    },
-    skills: DataTypes.ARRAY(DataTypes.STRING),
+    bio: DataTypes.STRING,
+    skills: DataTypes.STRING,
     profileImg: DataTypes.TEXT,
-    imgs: DataTypes.ARRAY(DataTypes.TEXT),
-    friends: DataTypes.ARRAY(DataTypes.STRING),
-    reqsIn: DataTypes.ARRAY(DataTypes.STRING),
-    reqsOut: DataTypes.ARRAY(DataTypes.STRING)
-  }, {
+    img1: DataTypes.TEXT,
+    img2: DataTypes.TEXT,
+    img3: DataTypes.TEXT
+    }, {
     hooks: {
       beforeCreate: function (createdUser, options, cb) {
         // hash the password
