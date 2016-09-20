@@ -1,0 +1,38 @@
+<% include nav %>
+<div class="row">
+  <div class="col s10 m6 offset-s1 offset-m3">
+    <h2>Profile</h2>
+    <form action="/user/profile" method="POST">
+      <input id="authEmail" class="form-control" type="hidden" name="email" value="<%- currentUser.email %>">
+      <div class="form-group">
+        <label for="authFirstName">First Name</label>
+        <input id="authFirstName" class="form-control" type="text" name="firstName" value="<%- currentUser.firstName %>">
+      </div>
+
+      <div class="form-group">
+        <label for="authLastName">Last Name</label>
+        <input id="authLastName" class="form-control" type="text" name="lastName" value="<%- currentUser.lastName %>">
+      </div>
+
+      <div class="form-group">
+        <label for="authBio">Bio</label>
+        <input id="authBio" class="form-control" type="text" name="bio" value="<%- currentUser.bio %>">
+      </div>
+
+      <div class="form-group" id="editSkills">
+        <label for="authSkills">Skills</label>
+        <input id="authSkills" class="form-control editSkillsInput" type="text" name="skills" value="<%- currentUser.skills[0].replace(/\'/g, '') %>"><a href="#">+</a>
+        <div class="chips"></div>
+        <div class="chips chips-initial"></div>
+        <div class="chips chips-placeholder"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="authLink">Link</label>
+        <input id="authLink" class="form-control" type="text" name="link" value="<%- currentUser.link %>">
+      </div>
+
+      <input class="waves-effect waves-light btn" type="submit" value="Modify">
+    </form>
+  </div>
+</div>

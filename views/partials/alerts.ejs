@@ -1,0 +1,12 @@
+<div class="center blue-grey darken-1 white-text">
+  <% if (alerts.error) { %>
+    <% alerts.error.forEach(function(msg) { %>
+      <div class="alert alert-danger"><%= msg %></div>
+    <% }); %>
+  <% } %>
+  <% if (alerts.success) { %>
+    <% alerts.success.forEach(function(msg) { %>
+      <div class="alert alert-success"><%= msg %></div>
+    <% }); %>
+  <% } %>
+</div>
