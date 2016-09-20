@@ -6,3 +6,10 @@
 .side-nav {
   padding-left: 1em
 }
+
+.profileImg {
+  width: 100px;
+  height: 100px;
+  border: 0;
+  border-radius: 10px;
+}

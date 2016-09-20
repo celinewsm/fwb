@@ -4,8 +4,23 @@
   <div class="col s12 m8 offset-s0 offset-m2">
     <h2>Profile</h2>
 
-    <form action="/user/profile/upload" method="POST">
+    <% console.log("profileImg:",currentUser.profileImg) %>
+  <%  if (currentUser.profileImg == null) { %>
+      <img class="profileImg" src="/img/profile-placeholder.png" alt="" />
+  <%  } else { %>
+      <img class="profileImg" src="<%= currentUser.profileImg %>" alt="" />
+  <%  } %>
 
+    <form action="/user/profile/upload" id="profileImgForm" method="POST" enctype="multipart/form-data">
+      <div class="file-field input-field">
+       <div class="btn">
+         <span>File</span>
+         <input type="file" name="avatar">
+       </div>
+       <div class="file-path-wrapper">
+         <input class="file-path validate" type="text" placeholder="Upload one or more files">
+       </div>
+     </div>
     </form>
 
     <form action="/user/profile" method="POST" enctype="multipart/form-data">
@@ -32,7 +47,6 @@
 
       <div class=" col s12">
         <select id="focusDropdown" name="focus">
-          <% console.log("focus:",focus) %>
           <% for (var i = 0 ; i < focus.length; i++) { %>
             <% if (focus[i] === currentUser.focus) { %>
               <option selected value="<% focus[i] %>"> <%= focus[i] %></option>
