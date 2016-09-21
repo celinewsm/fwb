@@ -9,6 +9,7 @@ var passport = require('./config/ppConfig')
 var isLoggedIn = require('./middleware/isLoggedIn')
 var flash = require('connect-flash')
 var multer  = require('multer')
+var dotenv = require('dotenv').config();
 
 
 app.set('view engine', 'ejs')
