@@ -1,78 +1,150 @@
 <% include nav %>
 <div class="row">
-
-  <div class="col s12 m8 offset-s0 offset-m2">
-    <h2>Profile</h2>
-
+  <h2>Profile</h2>
+  <div class="col s12 center">
     <% console.log("profileImg:",currentUser.profileImg) %>
-  <%  if (currentUser.profileImg == null) { %>
+    <% if (currentUser.profileImg == null) { %>
       <img class="profileImg" src="/img/profile-placeholder.png" alt="" />
-  <%  } else { %>
+      <% } else { %>
       <img class="profileImg" src="<%= currentUser.profileImg %>" alt="" />
-  <%  } %>
-
-    <form action="/user/profile/upload" id="profileImgForm" method="POST" enctype="multipart/form-data">
-      <div class="file-field input-field">
-       <div class="btn">
-         <span>File</span>
-         <input type="file" name="avatar">
-       </div>
-       <div class="file-path-wrapper">
-         <input class="file-path validate" type="text" placeholder="Upload one or more files">
-       </div>
-     </div>
-    </form>
-
-    <form action="/user/profile" method="POST" enctype="multipart/form-data">
-      <input id="authEmail" class="form-control" type="hidden" name="email" value="<%- currentUser.email %>">
-      <div class="col s6">
-        <label for="authFirstName">First Name</label>
-        <input id="authFirstName" class="form-control" type="text" name="firstName" value="<%- currentUser.firstName %>">
+      <% } %>
+      <div class="col s12">
+        <div class="col s8 m6 offset-s2 offset-m3">
+          <form action="/user/profile/upload" id="profileImgForm" method="POST" enctype="multipart/form-data">
+            <div class="file-field input-field">
+             <div class="btn">
+               <span>File</span>
+               <input type="file" name="avatar" id="profileImgUpload" >
+             </div>
+             <div class="file-path-wrapper">
+               <input class="file-path validate upload" type="text" placeholder="Upload a profile image">
+             </div>
+           </div>
+          </form>
+        </div>
       </div>
+  </div>
+</div>
 
-      <div class="col s6">
-        <label for="authLastName">Last Name</label>
-        <input id="authLastName" class="form-control" type="text" name="lastName" value="<%- currentUser.lastName %>">
+  <ul class="collapsible row" data-collapsible="accordion">
+    <li>
+      <div class="collapsible-header center"><i class="material-icons">add_circle_outline</i>Edit details</div>
+      <div class="collapsible-body">
+        <br/><br/>
+        <form action="/user/profile" method="POST" enctype="multipart/form-data">
+          <input id="authEmail" class="form-control" type="hidden" name="email" value="<%- currentUser.email %>">
+          <div class="col s6">
+            <label for="authFirstName">First Name</label>
+            <input id="authFirstName" class="form-control" type="text" name="firstName" value="<%- currentUser.firstName %>">
+          </div>
+
+          <div class="col s6">
+            <label for="authLastName">Last Name</label>
+            <input id="authLastName" class="form-control" type="text" name="lastName" value="<%- currentUser.lastName %>">
+          </div>
+
+          <div class="col s6">
+            <label for="authEmail">Email</label>
+            <input disabled id="authEmail" class="form-control" type="text" name="email" value="<%- currentUser.email %>">
+          </div>
+
+          <div class="  col s6">
+            <label for="authPhone">Phone</label>
+            <input id="authPhone" class="form-control" type="text" name="phone" value="<%- currentUser.phone %>">
+          </div>
+
+          <div class=" col s12">
+            <label for="authFocus">Specialization</label>
+            <select id="focusDropdown" name="focus">
+              <% for (var i = 0 ; i < focus.length; i++) { %>
+                <% if (focus[i] === currentUser.focus) { %>
+                  <option selected value="<%= focus[i] %>"> <%= focus[i] %></option>
+                <% } else {%>
+                  <option value="<%= focus[i] %>"> <%= focus[i] %></option>
+                <% } %>
+              <% } %>
+          </select>
+        </div>
+
+          <div class="col s12">
+            <label for="authBio">Bio</label>
+            <input id="authBio" class="form-control" type="text" name="bio" value="<%- currentUser.bio %>">
+          </div>
+
+          <div class="col s12" id="editSkills">
+            <label for="authSkills">Skills</label>
+            <input id="authSkills" class="form-control editSkillsInput" type="text" name="skills" value="<%- currentUser.skills %>">
+          </div>
+
+          <div class="col s12">
+            <label for="authLink">Link</label>
+            <input id="authLink" class="form-control" type="text" name="link" value="<%- currentUser.link %>">
+          </div>
+          <div class="center">
+            <input class="waves-effect waves-light btn" type="submit" value="save">
+            <br/><br/><br/><br/><br/>
+          </div>
+        </form>
       </div>
+    </li>
 
-      <div class="col s6">
-        <label for="authEmail">Email</label>
-        <input disabled id="authEmail" class="form-control" type="text" name="email" value="<%- currentUser.email %>">
+    <li>
+      <div class="collapsible-header center"><i class="material-icons">add_circle_outline</i>Edit contact</div>
+      <div class="collapsible-body">
+        <div class="center">
+          <div class="">
+              <img class="portfolioThumb" src="<%= currentUser.img1 %>" alt="Upload Image 1" />
+          <!-- </div>
+          <div class="col"> -->
+                <img class="portfolioThumb" src="<%= currentUser.img2 %>" alt="Upload Image 2" />
+          <!-- </div>
+          <div class="col"> -->
+                <img class="portfolioThumb" src="<%= currentUser.img3 %>" alt="Upload Image 3" />
+          </div>
+        </div>
+
+
+        <div class="col s12">
+          <form action="/user/img1/upload" method="POST" enctype="multipart/form-data">
+            <div class="file-field input-field">
+             <div class="btn">
+               <span>Image 1</span>
+               <input type="file" name="img1">
+             </div>
+             <div class="file-path-wrapper">
+               <input class="file-path validate upload" type="text" placeholder="Upload or override image">
+             </div>
+           </div>
+          </form>
+
+          <form action="/user/img2/upload" method="POST" enctype="multipart/form-data">
+            <div class="file-field input-field">
+             <div class="btn">
+               <span>Image 2</span>
+               <input type="file" name="img2">
+             </div>
+             <div class="file-path-wrapper">
+               <input class="file-path validate upload" type="text" placeholder="Upload or override image">
+             </div>
+           </div>
+          </form>
+
+        <form action="/user/img3/upload" method="POST" enctype="multipart/form-data">
+          <div class="file-field input-field">
+           <div class="btn">
+             <span>Image 3</span>
+             <input type="file" name="img3">
+           </div>
+           <div class="file-path-wrapper">
+             <input class="file-path validate upload" type="text" placeholder="Upload or override image">
+           </div>
+         </div>
+        </form>
+        </div>
       </div>
+    </li>
 
-      <div class="  col s6">
-        <label for="authPhone">Phone</label>
-        <input id="authPhone" class="form-control" type="text" name="phone" value="<%- currentUser.phone %>">
-      </div>
+  </ul>
 
-      <div class=" col s12">
-        <select id="focusDropdown" name="focus">
-          <% for (var i = 0 ; i < focus.length; i++) { %>
-            <% if (focus[i] === currentUser.focus) { %>
-              <option selected value="<% focus[i] %>"> <%= focus[i] %></option>
-            <% } else {%>
-              <option value="<% focus[i] %>"> <%= focus[i] %></option>
-            <% } %>
-          <% } %>
-      </select>
-    </div>
-
-      <div class="  col s12">
-        <label for="authBio">Bio</label>
-        <input id="authBio" class="form-control" type="text" name="bio" value="<%- currentUser.bio %>">
-      </div>
-
-      <div class="  col s12" id="editSkills">
-        <label for="authSkills">Skills</label>
-        <input id="authSkills" class="form-control editSkillsInput" type="text" name="skills" value="<%- currentUser.skills %>">
-      </div>
-
-      <div class="  col s12">
-        <label for="authLink">Link</label>
-        <input id="authLink" class="form-control" type="text" name="link" value="<%- currentUser.link %>">
-      </div>
-
-      <input class="waves-effect waves-light btn" type="submit" value="Modify">
-    </form>
   </div>
 </div>

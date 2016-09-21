@@ -8,8 +8,17 @@
 }
 
 .profileImg {
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 150px;
   border: 0;
   border-radius: 10px;
+  object-fit: cover;
+}
+
+
+.portfolioThumb {
+  width: 200px;
+  height: 200px;
+  border: 0;
+  object-fit: cover;
 }

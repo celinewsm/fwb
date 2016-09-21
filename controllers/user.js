@@ -38,8 +38,11 @@ router.get('/profile', isLoggedIn, function (req, res) {
     })
 })
 
-router.post('/profile', function (req, res) {
-  console.log(req.user)
+var cpUpload = upload.fields([{ name: 'img1', maxCount: 1 }, { name: 'img2', maxCount: 1 }])
+router.post('/profile', cpUpload, function (req, res) {
+  console.log("req.body",req.body)
+  console.log("req.files",req.files)
+  // console.log("req.files['img1'][0].path",req.files['img1'][0].path)
   db.user.update({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
@@ -47,6 +50,9 @@ router.post('/profile', function (req, res) {
     bio: req.body.bio,
     skills: req.body.skills,
     link: req.body.link
+    // img1: req.files['img1'][0].path.replace("static/", "/"),
+    // img2: req.files['img2'][0].path.replace("static/", "/") ,
+    // img3: req.files['img3'][0].path.replace("static/", "/")
   }, {
     where: {
       email: req.body.email
@@ -55,7 +61,6 @@ router.post('/profile', function (req, res) {
     res.redirect('/user/profile')
   })
 })
-
 
 router.post('/profile/upload', upload.single('avatar'), function (req, res, next) {
   console.log("req.file:",req.file)
@@ -69,9 +74,50 @@ router.post('/profile/upload', upload.single('avatar'), function (req, res, next
   }).then(function (user) {
     res.redirect('/user/profile')
   })
+})
 
-  // req.file is the `avatar` file
-  // req.body will hold the text fields, if there were any
+router.post('/img1/upload', upload.single('img1'), function (req, res, next) {
+  console.log("req.file:",req.file)
+
+  db.user.update({
+    img1: req.file.path.replace("static/", "/")
+  }, {
+    where: {
+      id: req.session.passport.user
+    }
+  }).then(function (user) {
+    res.redirect('/user/profile')
+  })
+})
+
+
+router.post('/img2/upload', upload.single('img2'), function (req, res, next) {
+  console.log("req.file:",req.file)
+
+  db.user.update({
+    img2: req.file.path.replace("static/", "/")
+  }, {
+    where: {
+      id: req.session.passport.user
+    }
+  }).then(function (user) {
+    res.redirect('/user/profile')
+  })
+})
+
+
+router.post('/img3/upload', upload.single('img3'), function (req, res, next) {
+  console.log("req.file:",req.file)
+
+  db.user.update({
+    img3: req.file.path.replace("static/", "/")
+  }, {
+    where: {
+      id: req.session.passport.user
+    }
+  }).then(function (user) {
+    res.redirect('/user/profile')
+  })
 })
 
 

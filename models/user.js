@@ -40,6 +40,7 @@ module.exports = function (sequelize, DataTypes) {
     },
     phone: {
       type: DataTypes.INTEGER,
+      notEmpty: false,
       allowNull: true,
       validate: {
         len: {
@@ -49,16 +50,15 @@ module.exports = function (sequelize, DataTypes) {
       }
     },
     link: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-      notEmpty: false,
-      validate: {
-        isUrl: true,
-        len: {
-          msg: 'Insert valid link'
-        }
-
-      }
+      type: DataTypes.TEXT
+      // notEmpty: false,
+      // allowNull: true,
+      // validate: {
+      //   isUrl: true,
+      //   len: {
+      //     msg: 'Insert valid link'
+      //   }
+      // }
     },
     focus: DataTypes.STRING,
     bio: DataTypes.STRING,
