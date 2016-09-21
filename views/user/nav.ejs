@@ -12,6 +12,15 @@
       <li><a href="/auth/logout"><i class="material-icons">power_settings_new</i></a></li>
     </ul>
     <ul class="side-nav" id="mobile-demo">
+      <div class="center">
+        <br/>
+        <% console.log("profileImg:",currentUser.profileImg) %>
+        <% if (currentUser.profileImg == null) { %>
+          <img class="profileImg" src="/img/profile-placeholder.png" alt="" />
+          <% } else { %>
+          <img class="profileImg" src="<%= currentUser.profileImg %>" alt="" />
+          <% } %>
+      </div>
       <li><a href="/user/contacts">Contacts</a></li>
       <li><a href="/user/requests">Requests</a></li>
       <li><a href="/user/profile">Profile</a></li>

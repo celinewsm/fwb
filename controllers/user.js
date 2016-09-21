@@ -6,36 +6,26 @@ var router = express.Router()
 var multer  = require('multer')
 var upload = multer({ dest: 'static/img/uploads/' })
 
-router.get('/', isLoggedIn, function (req, res) {
-  db.user.findAll().then(function(allUsers) {
-    var focusList = []
-    allUsers.forEach(function(user){
-      focusList.push(user.focus)
+router.get('/', function (req, res) {
+  db.specialization.findAll().then(function(specializations) {
+    var specializationList = []
+    specializations.forEach(function(specializations){
+      specializationList.push([specializations.term,specializations.id])
     })
-    focusList.sort()
-    console.log(focusList);
-    // console.log("foundUser: ",foundUser);
-    // users will be an array of all User instances
-      res.render('user/index', {focus: focusList})
+    specializationList.sort()
+    res.render('user/index', {specialization: specializationList})
   })
 })
 
-router.get('/profile', isLoggedIn, function (req, res) {
-  db.user.find({
-    where: {id: req.session.passport.user}
-    }).then(function (foundUser) {
-      db.user.findAll().then(function(allUsers) {
-        var focusList = []
-        allUsers.forEach(function(user){
-          focusList.push(user.focus)
-        })
-        focusList.sort()
-        console.log(focusList);
-        // console.log("foundUser: ",foundUser);
-        // users will be an array of all User instances
-          res.render('user/profile', {focus: focusList})
-      })
+router.get('/profile', function (req, res) {
+  db.specialization.findAll().then(function(specializations) {
+    var specializationList = []
+    specializations.forEach(function(specializations){
+      specializationList.push([specializations.term,specializations.id])
     })
+    specializationList.sort()
+    res.render('user/profile', {specialization: specializationList})
+  })
 })
 
 var cpUpload = upload.fields([{ name: 'img1', maxCount: 1 }, { name: 'img2', maxCount: 1 }])
@@ -46,7 +36,8 @@ router.post('/profile', cpUpload, function (req, res) {
   db.user.update({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
-    focus: req.body.focus,
+    specializationId: req.body.specialization,
+    phone: req.body.phone,
     bio: req.body.bio,
     skills: req.body.skills,
     link: req.body.link
@@ -118,6 +109,21 @@ router.post('/img3/upload', upload.single('img3'), function (req, res, next) {
   }).then(function (user) {
     res.redirect('/user/profile')
   })
+})
+
+
+router.get('/:specializationId', function (req, res) {
+  db.user.find({
+    where: {specializationId: specializationId}
+  }).then(function(user) {
+
+    // is friend will show contact
+    // if () {}
+
+    // if not friend show without contact
+
+  // user will be an instance of User and stores the content of the table entry with id 2. if such an entry is not defined you will get null
+  });
 })
 
 

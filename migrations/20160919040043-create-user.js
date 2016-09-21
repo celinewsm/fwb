@@ -29,8 +29,8 @@ module.exports = {
       link: {
         type: Sequelize.TEXT
       },
-      focus: {
-        type: Sequelize.STRING
+      specializationId: {
+        type: Sequelize.INTEGER
       },
       bio: {
         type: Sequelize.STRING

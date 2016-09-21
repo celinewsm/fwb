@@ -16,7 +16,7 @@ app.use(require('morgan')('dev'))
 app.use(ejsLayouts)
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(express.static(__dirname + '/static/'))
-var upload = multer({ dest: 'uploads/' })
+var upload = multer({ dest: 'static/img/uploads/' })
 
 app.use(session({
   secret: process.env.SESSION_SECRET || "secret message",
@@ -38,7 +38,7 @@ app.use(function(req, res, next) {
 });
 
 app.use('/auth', require('./controllers/auth'))
-app.use('/user', require('./controllers/user'))
+app.use('/user', isLoggedIn, require('./controllers/user'))
 app.use('/guest', require('./controllers/guest'))
 
 app.get('/', isLoggedIn, function(req, res) {

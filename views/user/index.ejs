@@ -1,31 +1,30 @@
 <% include nav %>
 
 <div class="row">
-  <div class="col">
-    <h1>Welcome, <%- currentUser.firstName %></h1>
+  <div class="center">
+    <h5>Hi <%- currentUser.firstName %>,</h5>
+    <p>Who would you like to know?</p>
   </div>
 
-  <select id="focusDropdown" name="focus">
-    <% console.log("focus:",focus) %>
-    <% for (var i = 0 ; i < focus.length; i++) { %>
-      <% if (focus[i] === currentUser.focus) { %>
-        <option selected value="<% focus[i] %>"> <%= focus[i] %></option>
-      <% } else {%>
-        <option value="<% focus[i] %>"> <%= focus[i] %></option>
+<div class="col s10 offset-s1">
+  <div class="center selectSpecialization">
+    <% for (var i = 0 ; i < specialization.length; i++) { %>
+      <p>
+      <%  if ( specialization[i][1] != 4 ) { %>
+        <a href="/user/<%= specialization[i][1] %>" class="btn"><%= specialization[i][0] %></a>
+      </p>
       <% } %>
-    <% } %>
-</select>
+  <%  } %>
+      <a href="/user/4" class="btn">Others</a>
 
-<div class="center">
-  <a href="#" class="btn">Wed Dev</a>
-  <a href="#" class="btn">UX</a>
-  <a href="#" class="btn">Biz Dev</a>
-  <a href="#" class="btn">Others</a>
+  </div>
+  <div class="center">
+    <p>
+      <a href="/user/random" class="btn red">Surprise me</a>
+    </p>
+  </div>
 </div>
-<div class="center">
-  <br/>
-  <a href="#" class="btn red">Surprise me</a>
-</div>
+
 
 
 

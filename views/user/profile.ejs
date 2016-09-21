@@ -54,13 +54,13 @@
           </div>
 
           <div class=" col s12">
-            <label for="authFocus">Specialization</label>
-            <select id="focusDropdown" name="focus">
-              <% for (var i = 0 ; i < focus.length; i++) { %>
-                <% if (focus[i] === currentUser.focus) { %>
-                  <option selected value="<%= focus[i] %>"> <%= focus[i] %></option>
+            <label for="authSpecialization">Specialization</label>
+            <select id="focusDropdown" name="specialization">
+              <% for (var i = 0 ; i < specialization.length; i++) { %>
+                <% if (specialization[i][1] === currentUser.specializationId) { %>
+                  <option selected value="<%= specialization[i][1] %>"> <%= specialization[i][0] %></option>
                 <% } else {%>
-                  <option value="<%= focus[i] %>"> <%= focus[i] %></option>
+                  <option value="<%= specialization[i][1] %>"> <%= specialization[i][0] %></option>
                 <% } %>
               <% } %>
           </select>
@@ -89,7 +89,7 @@
     </li>
 
     <li>
-      <div class="collapsible-header center"><i class="material-icons">add_circle_outline</i>Edit contact</div>
+      <div class="collapsible-header center"><i class="material-icons">add_circle_outline</i>Edit Portfolio</div>
       <div class="collapsible-body">
         <div class="center">
           <div class="">

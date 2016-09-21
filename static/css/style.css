@@ -15,10 +15,17 @@
   object-fit: cover;
 }
 
-
 .portfolioThumb {
   width: 200px;
   height: 200px;
   border: 0;
   object-fit: cover;
+}
+
+.selectSpecialization a {
+  width: 80%
+}
+
+.sliderName {
+  color: black;
 }

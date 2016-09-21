@@ -60,7 +60,7 @@ module.exports = function (sequelize, DataTypes) {
       //   }
       // }
     },
-    focus: DataTypes.STRING,
+    specializationId: DataTypes.INTEGER,
     bio: DataTypes.STRING,
     skills: DataTypes.STRING,
     profileImg: DataTypes.TEXT,
@@ -80,6 +80,7 @@ module.exports = function (sequelize, DataTypes) {
     },
     classMethods: {
       associate: function (models) {
+        models.user.belongsTo(models.specialization)
         // associations can be defined here
       }
     },
