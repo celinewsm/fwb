@@ -1,14 +1,14 @@
 <% include nav %>
 <div class="center grey-text text-lighten-1">
-  <h5>Web Developer</h5>
+  <h5><%= specialization.term %></h5>
 </div>
 
 <div class="arrowLeft z-depth-2">
-  <a href="/user/:jobId/next"><i class="material-icons large">keyboard_arrow_left</i></a>
+  <a href="/user/<%= specialization.id %>/back"><i class="material-icons large">keyboard_arrow_left</i></a>
 </div>
 
 <div class="arrowRight z-depth-2">
-  <i class="material-icons large">keyboard_arrow_right</i>
+  <a href="/user/<%= specialization.id %>/next"><i class="material-icons large">keyboard_arrow_right</i></a>
 </div>
 
 <div class="row">
@@ -16,28 +16,41 @@
     <div class="spacer">
     </div>
       <div class="carousel carousel-slider" data-indicators="true">
-        <img class="carousel-item carouselImg" src="/img/profile-placeholder.png">
-        <img class="carousel-item carouselImg" src="http://lorempixel.com/800/400/food/2">
-        <img class="carousel-item carouselImg" src="http://lorempixel.com/800/400/food/3">
-        <img class="carousel-item carouselImg" src="http://lorempixel.com/800/400/food/4">
+      <%  if(user.profileImg){ %>
+          <img class="carousel-item carouselImg" src="<%= user.profileImg %>">
+      <%  } else { %>
+          <img class="%>carousel-item carouselImg" src="/img/profile-placeholder.png">
+      <%  } %>
+      <%  if(user.img1){ %>
+          <img class="carousel-item carouselImg" src="<%= user.img1 %>">
+      <%  } %>
+      <%  if(user.img2){ %>
+          <img class="carousel-item carouselImg" src="<%= user.img2 %>">
+      <%  } %>
+      <%  if(user.img3){ %>
+          <img class="carousel-item carouselImg" src="<%= user.img3 %>">
+      <%  } %>
       </div>
   </div>
-
 
   <div class="col s12 m6 l4">
 
     <div class="col s12">
       <h5 class="center">
-        firstName
+        <%= user.firstName %>
       </h5>
     </div>
     <div class="col s12 center">
       <p>
-        <i>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</i>
+        <i><%= user.bio %></i>
       </p>
       <div class="col s10 offset-s1 blue-grey lighten-5">
         <p>
-          Skills:<br/>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          Skills:<br/><%= user.skills %>
+        <%  if (!user.skills) { %>
+          <%= user.firstName %> seems to have decided to leave this empty <br/> ¯\_(ツ)_/¯
+        <%  } %>
+
         </p>
       </div>
 
@@ -48,16 +61,20 @@
         </div>
         <p>
           email: <br/>
-          me@email.com
+          <%= user.email %>
         </p>
-        <p>
-          phone: <br/>
-          123456789
-        </p>
-        <p>
-          link: <br/>
-          <a href="mylink.com">mylink.com</a>
-        </p>
+        <%  if(user.phone) { %>
+            <p>
+              phone: <br/>
+            <%= user.phone %>
+            </p>
+        <%  } %>
+        <%  if(user.link){ %>
+            <p>
+              link: <br/>
+              <a href="<%= user.link %>"><%= user.link %></a>
+            </p>
+        <%  } %>
         <div class="spacer col s12">
         </div>
       </div>
@@ -67,7 +84,7 @@
     </div>
   <div class="center">
     <form class="" action="index.html" method="post">
-      <input type="hidden" name="userId" value="userId">
+      <input type="hidden" name="userId" value="<%= user.id %>">
       <input class="btn-large waves-effect darken-text-2" type="button" name="name" value="Connect">
     </form>
   </div>

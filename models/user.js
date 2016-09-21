@@ -42,12 +42,12 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       notEmpty: false,
       allowNull: true,
-      validate: {
-        len: {
-          args: [8],
-          msg: 'Phone must be 8 characters'
-        }
-      }
+      // validate: {
+      //   len: {
+      //     args: [8],
+      //     msg: 'Phone must be 8 characters'
+      //   }
+      // }
     },
     link: {
       type: DataTypes.TEXT

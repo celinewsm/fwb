@@ -51,10 +51,15 @@ height:100px !important;}
 
 .arrowLeft , .arrowRight {
   text-align: center;
-  position: absolute;
+  position: fixed;
   top: 45%;
   z-index: 100;
 }
+
+.arrowLeft a , .arrowRight a {
+  color: black;
+}
+
 .arrowLeft {
   left: 0;
 }
