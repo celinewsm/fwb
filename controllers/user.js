@@ -30,8 +30,7 @@ router.get('/profile', function (req, res) {
   })
 })
 
-var cpUpload = upload.fields([{ name: 'img1', maxCount: 1 }, { name: 'img2', maxCount: 1 }])
-router.post('/profile', cpUpload, function (req, res) {
+router.post('/profile', function (req, res) {
   console.log('req.body', req.body)
   console.log('req.files', req.files)
   db.user.update({
@@ -127,45 +126,58 @@ Array.prototype.unique = function (mutate) {
 
 var groupOfUsers = []
 router.get('/:specializationId', function (req, res) {
-  db.user.findAll({
-    where: {specializationId: specializationId}
-  }).then(function (users) {
-    var usersMatch = []
-    for (var i = 0; i < users.length; i++) {
-      usersMatch.push(users[i].id)
-    }
-    var groupToRemove = []
-    db.friend.findAll().then(function (allFriends) {
-      for (var j = 0; j < users.length; j++) {
-        groupToRemove.push(allFriends[j].fromUserId)
-        groupToRemove.push(allFriends[j].toUserId)
-      }
-      groupToRemove = groupToRemove.unique()
-    })
-    // user IDs stored in groupOfUsers
-    groupOfUsers = shuffle(getArrayDiff(usersMatch, groupToRemove))
 
-    var specializationId = users.specializationId
-    var profileImg = users.profileImg
-    var img1 = users.img1
-    var img2 = users.img2
-    var img3 = users.img3
-    var firstName = users.firstName
-    var bio = users.bio
-    var skills = users.skills
+  res.render('user/browseProfile.ejs')
 
-    var email = users.email
-    var phone = users.phone
-    var lastName = users.lastName
-    var link = users.link
+  // db.user.findAll({
+  //   where: {specializationId: specializationId}
+  // }).then(function (users) {
+  //   var usersMatch = []
+  //   for (var i = 0; i < users.length; i++) {
+  //     usersMatch.push(users[i].id)
+  //   }
+  //   var groupToRemove = []
+  //   db.friend.findAll().then(function (allFriends) {
+  //     for (var j = 0; j < users.length; j++) {
+  //       groupToRemove.push(allFriends[j].fromUserId)
+  //       groupToRemove.push(allFriends[j].toUserId)
+  //     }
+  //     groupToRemove = groupToRemove.unique()
+  //   })
+  //   // user IDs stored in groupOfUsers
+  //   groupOfUsers = shuffle(getArrayDiff(usersMatch, groupToRemove))
+  //
+  //   var specializationId = users.specializationId
+  //   var profileImg = users.profileImg
+  //   var img1 = users.img1
+  //   var img2 = users.img2
+  //   var img3 = users.img3
+  //   var firstName = users.firstName
+  //   var bio = users.bio
+  //   var skills = users.skills
+  //
+  //   var email = users.email
+  //   var phone = users.phone
+  //   var lastName = users.lastName
+  //   var link = users.link
+  //
+  //
+  //
+  //   // is friend will show contact
+  //   // if () {}
+  //
+  //   // if not friend show without contact
+  //
+  // // user will be an instance of User and stores the content of the table entry with id 2. if such an entry is not defined you will get null
+  // })
 
-    // is friend will show contact
-    // if () {}
 
-    // if not friend show without contact
 
-  // user will be an instance of User and stores the content of the table entry with id 2. if such an entry is not defined you will get null
-  })
+
+
+
+
+
 })
 
 router.get('/:specializationId', function (req, res) {
