@@ -25,6 +25,39 @@ $(document).ready(function () {
     });
 });
 
+$(".accept").click(function(event){
+  console.log(this.value)
+  console.log("accept button clicked")
+
+  $.ajax({
+    url: '/user/friendRequests/accept',
+    type: 'PUT',
+    data: {userRequestAccepted: this.value},
+    dataType: 'json'
+  }).done(function (data) {
+    $("#"+data).empty()
+  }).fail(function () {
+    console.log('error accepting friend')
+  })
+});
+
+$(".reject").click(function(event){
+  console.log(this.value)
+  console.log("accept button clicked")
+
+  $.ajax({
+    url: '/user/friendRequests/reject',
+    type: 'PUT',
+    data: {userRequestRejected: this.value},
+    dataType: 'json'
+  }).done(function (data) {
+    $("#"+data).empty()
+  }).fail(function () {
+    console.log('error rejecting friend')
+  })
+});
+
+
 // Materialize.toast('I am a toast!', 4000) // 4000 is the duration of the toast
 
 })

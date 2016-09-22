@@ -5,19 +5,25 @@
   </div>
   <div class="col s12 m8 offset-m2 row">
 
-    <div class="row card-panel">
-      <div class="col s4 m2">
-        <img class="circle smallProfile" src="/img/profile-placeholder.png" alt="" />
-      </div>
-      <div class="col s8 m8">
-        <h5>firstName lastName</h5>
-        <p>job function</p>
-      </div>
+  <%  for (var i = 0 ; i < requestsList.length ; i++ ) { %>
+    <div class="toEmpty" id="<%= requestsList[i].id %>">
+      <div class="row card-panel" >
+        <div class="col s4 m2">
+          <img class="circle smallProfile" src="<%= requestsList[i].profileImg %>" alt="" />
+        </div>
+        <div class="col s8 m8">
+          <h5><%= requestsList[i].firstName %> <%= requestsList[i].lastName %></h5>
+          <p><%= specializList[i] %></p>
+        </div>
 
-      <div class="col s12 m2 center">
-        <button class="z-depth-1 acceptReject waves-effect" type="button" name="button">Accept</button>
-        <button class="z-depth-1 acceptReject waves-effect" type="button" name="button">Reject</button>
+        <div class="col s12 m2 center">
+          <button value="<%= requestsList[i].id %>" class="accept z-depth-1 acceptReject waves-effect" type="button" name="button">Accept</button>
+          <button value="<%= requestsList[i].id %>" class="reject z-depth-1 acceptReject waves-effect" type="button" name="button">Reject</button>
+        </div>
       </div>
     </div>
+
+<%  } %>
+
   </div>
 </div>
