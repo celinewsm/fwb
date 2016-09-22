@@ -88,3 +88,11 @@ height:100px !important;}
 .acceptReject:hover {
   background-color: rgba(150,150,150,0.1);
 }
+
+.hoverRed:hover{
+  background-color:red
+}
+
+#delete a {
+  color: white;
+}

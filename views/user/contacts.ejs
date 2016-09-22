@@ -5,28 +5,32 @@
   </div>
   <div class="col s12 m8 offset-m2">
 
-
-        <div class="col s12 m4">
-          <div class="card">
-              <div class="card-image waves-effect waves-block waves-light">
-                <img class="activator" src="/img/profile-placeholder.png">
-              </div>
-              <div class="card-content">
-                <span class="card-title activator grey-text text-darken-4">firstName<i class="material-icons right">more_vert</i></span>
-                <p>
-                  Specialization
-                </p>
-              </div>
-              <div class="card-reveal">
-                <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i>firstName lastName</span>
-                <p><i class="material-icons tiny">email</i> email@email.com</p>
-                <p><i class="material-icons tiny">phone</i> 123456789</p>
-                <p><i class="material-icons tiny">link</i> link</p>
-                <p><a href="/user/browse/userId">View Full Profile</a></p>
-              </div>
+  <%  for (var i = 0 ; i < friends.length ; i++) { %>
+      <div class="col s12 m4">
+        <div class="card">
+            <div class="card-image waves-effect waves-block waves-light">
+              <img class="activator" src="<%= friends[i].profileImg %>">
             </div>
-        </div>
-
+            <div class="card-content">
+              <span class="card-title activator grey-text text-darken-4"><%= friends[i].firstName %><i class="material-icons right">more_vert</i></span>
+              <p>
+                <%= specializList[i] %>
+              </p>
+            </div>
+            <div class="card-reveal">
+              <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i><%= friends[i].firstName %> <%= friends[i].lastName %></span>
+              <p><i class="material-icons tiny">email</i> <%= friends[i].email %></p>
+            <%  if(friends[i].phone){ %>
+                <p><i class="material-icons tiny">phone</i> <%= friends[i].phone %></p>
+            <%  } %>
+            <%  if (friends[i].link) { %>
+                <p><i class="material-icons tiny">link</i> <%= friends[i].link %></p>
+            <%  } %>
+              <p><a href="/user/browse/<%= friends[i].id %>">View Full Profile</a></p>
+            </div>
+          </div>
+      </div>
+  <%  } %>
 
 
   </div>

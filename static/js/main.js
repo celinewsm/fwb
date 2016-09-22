@@ -28,7 +28,6 @@ $(document).ready(function () {
 $(".accept").click(function(event){
   console.log(this.value)
   console.log("accept button clicked")
-
   $.ajax({
     url: '/user/friendRequests/accept',
     type: 'PUT',
@@ -56,6 +55,45 @@ $(".reject").click(function(event){
     console.log('error rejecting friend')
   })
 });
+
+$(".accept2").click(function(event){
+  console.log(this.value)
+  console.log("accept button clicked")
+  $.ajax({
+    url: '/user/friendRequests/accept',
+    type: 'PUT',
+    data: {userRequestAccepted: this.value},
+    dataType: 'json'
+  }).done(function (data) {
+
+    $("#toEmpty").empty()
+    $("#toEmpty").append('<div class="center"><h3>User accepted. View user in contacts.</h3><a class="btn" href="/user/contacts">Contacts</a></div>')
+
+  }).fail(function () {
+
+    console.log('error accepting friend')
+  })
+});
+
+$(".reject2").click(function(event){
+  console.log(this.value)
+  console.log("accept button clicked")
+
+  $.ajax({
+    url: '/user/friendRequests/reject',
+    type: 'PUT',
+    data: {userRequestRejected: this.value},
+    dataType: 'json'
+  }).done(function (data) {
+
+    $("#toEmpty").empty()
+    $("#toEmpty").append('<div class="center"><h3>User rejected.</h3><a class="btn" href="/user/friendRequests">More requests</a></div>')
+
+  }).fail(function () {
+    console.log('error rejecting friend')
+  })
+});
+
 
 
 // Materialize.toast('I am a toast!', 4000) // 4000 is the duration of the toast

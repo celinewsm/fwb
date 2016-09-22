@@ -105,6 +105,23 @@ router.post('/img3/upload', upload.single('img3'), function (req, res, next) {
   })
 })
 
+router.get('/deleteUser', function (req, res) {
+  db.user.destroy({
+    where: { id: req.session.passport.user }
+    }).then(function() {
+
+      db.friend.destroy({
+        where: {
+          $or: [{fromUserId: req.session.passport.user}, {toUserId: req.session.passport.user}]
+        }
+        }).then(function() {
+          req.flash('success', 'Account Deleted');
+          res.redirect('/auth/')
+      });
+  });
+})
+
+
 Array.prototype.unique = function (mutate) {
   var unique = this.reduce(function (accum, current) {
     if (accum.indexOf(current) < 0) {
@@ -121,10 +138,6 @@ Array.prototype.unique = function (mutate) {
   }
   return unique
 }
-
-// router.get('/dummy', function (req, res) {
-//   res.render('user/dummyProfile.ejs')
-// })
 
 router.get('/friendRequests', function (req, res) {
   var tempRequestList = []
@@ -152,14 +165,17 @@ router.get('/friendRequests', function (req, res) {
           var tempSpecializationList = []
           var l = 0;
           for (var k = 0; k < tempRequestList.length; k++) {
+            console.log("tempRequestList 2 >>>>",tempRequestList);
+            console.log("tempRequestList[k]",tempRequestList[k])
+            console.log("tempRequestList[k].specializationId>>>>",tempRequestList[k].specializationId)
             db.specialization.findById(tempRequestList[k].specializationId).then(function(foundSpecialization){
+              console.log("foundSpecialization>>>>>>",foundSpecialization)
               tempSpecializationList.push(foundSpecialization.term)
               l++
               if (l === tempRequestList.length) {
                 res.render('user/requests', {requestsList: tempRequestList, specializList: tempSpecializationList})
               }
             })
-
           }
         }
       });
@@ -168,6 +184,7 @@ router.get('/friendRequests', function (req, res) {
 })
 
 router.put('/friendRequests/accept', function (req, res) {
+  console.log("req.body.userRequestAccepted>>>",req.body.userRequestAccepted)
   db.friend.update({
     status: 'accepted'
   }, {
@@ -242,13 +259,75 @@ router.get('/browse/:userId', function (req, res) {
     db.specialization.find({
       where: {id: user.specializationId }
     }).then(function (specialization) {
-      res.render('user/userProfile', {user: user, specialization: specialization})
+      res.render('user/previewProfile', {user: user, specialization: specialization})
     })
   });
 })
 
 router.get('/contacts', function (req, res) {
-  res.render('user/contacts')
+
+  db.friend.findAll({
+    where: {
+      status: 'accepted',
+      $or: [{fromUserId: req.session.passport.user}, {toUserId: req.session.passport.user}]
+    }
+  }).then(function(friendList){
+    console.log("found friend list", friendList)
+    var tempArray = []
+    var j = 0
+    for ( var i = 0 ; i < friendList.length ; i++ ) {
+      tempArray.push(friendList[i].fromUserId)
+      tempArray.push(friendList[i].toUserId)
+      j++
+      if(j === friendList.length) {
+        console.log("CLEARING J LOOOOOOOOP")
+
+        tempArray = tempArray.unique()
+        console.log("tempArray>>>>>>>>>",tempArray)
+        console.log("req.session.passport.user",req.session.passport.user);
+        // console.log(tempArray.findIndex(req.session.passport.user))
+        var indexToRemove = tempArray.indexOf(parseInt(req.session.passport.user))
+        tempArray.splice(indexToRemove, 1)
+
+        var friendsDetails = []
+        var l = 0;
+        for ( var k = 0 ; k < tempArray.length ; k++) {
+
+          console.log("logging indiv users. current: " + k)
+
+          db.user.find({
+            where: {id: tempArray[k]}
+          }).then(function(user) {
+
+              friendsDetails.push(user)
+              l++
+              if (l === tempArray.length) {
+
+                console.log("CLEARING L LOOOOOOOOP")
+
+                var tempSpecializationList = []
+                var m = 0;
+                console.log("tempArray>>>>>>>>>>>",tempArray)
+                for (var n = 0; n < friendsDetails.length; n++) {
+                  console.log("friendsDetails[n].specializationId",friendsDetails[n].specializationId)
+                  db.specialization.findById(friendsDetails[n].specializationId).then(function(foundSpecialization){
+                    console.log("foundSpecialization>>>>>> ", foundSpecialization);
+                    tempSpecializationList.push(foundSpecialization.term)
+                    m++
+                    if (m === tempArray.length) {
+                      console.log("CLEARING M LOOOOOOOOP")
+                      console.log("tempSpecializationList>>>>>>>",tempSpecializationList)
+                      res.render('user/contacts',{friends: friendsDetails, specializList: tempSpecializationList})
+                    }
+                  })
+                }
+              }
+          });
+
+        }
+      }
+    }
+  })
 })
 
 var groupOfUsers = []

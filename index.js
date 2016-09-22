@@ -32,8 +32,6 @@ app.use(passport.session());
 app.use(function(req, res, next) {
   // before every route, attach the flash messages and current user to res.locals
   res.locals.alerts = req.flash();
-  console.log("alerts:",res.locals.alerts)
-  console.log("alerts:",res.user)
   res.locals.currentUser = req.user;
   next();
 });
