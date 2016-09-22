@@ -17,7 +17,8 @@ router.post('/signup', function(req, res) {
     defaults: {
       firstName: req.body.firstName,
       lastName: req.body.lastName,
-      password: req.body.password
+      password: req.body.password,
+      profileImg: "/img/profile-placeholder.png"
     }
   }).spread(function(user, created) {
     console.log("user: ",user)

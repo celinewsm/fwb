@@ -4,7 +4,7 @@
     <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
     <ul id="nav-mobile" class="left hide-on-med-and-down">
       <li><a href="/user/contacts">Contacts</a></li>
-      <li><a href="/user/requests">Requests</a></li>
+      <li><a href="/user/friendRequests">Requests</a></li>
     </ul>
     <ul class="right hide-on-med-and-down">
       <li><a href="/user/profile"><i class="material-icons">person</i></a></li>
@@ -12,16 +12,13 @@
     </ul>
     <ul class="side-nav" id="mobile-demo">
       <div class="center">
-        <br/>
-        <% console.log("profileImg:",currentUser.profileImg) %>
-        <% if (currentUser.profileImg == null) { %>
-          <img class="profileImg" src="/img/profile-placeholder.png" alt="" />
-          <% } else { %>
-          <img class="profileImg" src="<%= currentUser.profileImg %>" alt="" />
-          <% } %>
+        <div class="spacer">
+
+        </div>
+        <img class="profileImg" src="/img/profile-placeholder.png" alt="" />
       </div>
       <li><a href="/user/contacts">Contacts</a></li>
-      <li><a href="/user/requests">Requests</a></li>
+      <li><a href="/user/friendRequests">Requests</a></li>
       <li><a href="/user/profile">Profile</a></li>
       <li><a href="/auth/logout">Logout</a></li>
     </ul>

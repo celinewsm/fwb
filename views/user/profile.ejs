@@ -2,12 +2,7 @@
 <div class="row">
   <h2>Profile</h2>
   <div class="col s12 center">
-    <% console.log("profileImg:",currentUser.profileImg) %>
-    <% if (currentUser.profileImg == null) { %>
-      <img class="profileImg" src="/img/profile-placeholder.png" alt="" />
-      <% } else { %>
       <img class="profileImg" src="<%= currentUser.profileImg %>" alt="" />
-      <% } %>
       <div class="col s12">
         <div class="col s8 m6 offset-s2 offset-m3">
           <form action="/user/profile/upload" id="profileImgForm" method="POST" enctype="multipart/form-data">

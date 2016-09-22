@@ -1,11 +1,11 @@
 var express = require('express')
 var db = require('../models')
-var passport = require('../config/ppConfig')
-var isLoggedIn = require('../middleware/isLoggedIn')
+// var passport = require('../config/ppConfig')
+// var isLoggedIn = require('../middleware/isLoggedIn')
 var router = express.Router()
 var multer = require('multer')
 var upload = multer({ dest: 'static/img/uploads/' })
-var dotenv = require('dotenv').config()
+// var dotenv = require('dotenv').config()
 var cloudinary = require('cloudinary')
 
 router.get('/', function (req, res) {
@@ -122,29 +122,38 @@ Array.prototype.unique = function (mutate) {
   return unique
 }
 
-router.get('/dummy', function (req, res) {
-  res.render('user/dummyProfile.ejs')
+// router.get('/dummy', function (req, res) {
+//   res.render('user/dummyProfile.ejs')
+// })
+
+router.get('/friendRequests', function (req, res) {
+  db.friend.findAll({
+    where:{
+      toUserId: req.session.passport.user
+    }
+  }).then(function(friendRequestsList){
+
+  })
+
+  res.render('user/requests')
 })
 
 var groupOfUsers = []
 var currentSpecializationId
-var profileCounter;
+var profileCounter
 router.get('/:specializationId', function (req, res) {
-
   currentSpecializationId = req.params.specializationId
   db.user.findAll({
     where: {specializationId: req.params.specializationId}
   }).then(function (users) {
-
     // if no type of user found
-    if(users.length === 0){
+    if (users.length === 0) {
       db.specialization.find({
         where: {id: req.params.specializationId}
-      }).then(function(specialization) {
+      }).then(function (specialization) {
         res.render('user/noneFound', {specialization: specialization})
-      });
+      })
     }
-
     var usersMatch = []
     var groupToRemove = []
     for (var i = 0; i < users.length; i++) {
@@ -152,111 +161,106 @@ router.get('/:specializationId', function (req, res) {
     }
     db.friend.findAll().then(function (allFriends) {
       if (allFriends.length !== 0) {
-        for (var j = 0; j < users.length; j++) {
-          groupToRemove.push(allFriends[j].fromUserId)
-          groupToRemove.push(allFriends[j].toUserId)
+        for (var j = 0; j < allFriends.length; j++) {
+          if(allFriends[j].fromUserId === req.session.passport.user || allFriends[j].toUserId === req.session.passport.user ){
+            groupToRemove.push(allFriends[j].fromUserId)
+            groupToRemove.push(allFriends[j].toUserId)
+          }
         }
       }
       groupToRemove.push(req.session.passport.user)
       groupToRemove = groupToRemove.unique()
+
+      // user IDs stored in groupOfUsers
+      groupOfUsers = shuffle(getArrayDiff(usersMatch, groupToRemove))
+
+      profileCounter = 0
+
+      if (profileCounter < 0 || profileCounter >= groupOfUsers.length) {
+        console.log('profile counter out of range')
+        db.specialization.find({
+          where: {id: req.params.specializationId}
+        }).then(function (specialization) {
+          res.render('user/noneFound', {specialization: specialization})
+        })
+      }
+      db.user.find({
+        where: {id: groupOfUsers[profileCounter]}
+      }).then(function (user) {
+        db.specialization.find({
+          where: {id: req.params.specializationId}
+        }).then(function (specialization) {
+          res.render('user/browseProfile', {user: user, specialization: specialization})
+        })
+      })
     })
-    // user IDs stored in groupOfUsers
-    groupOfUsers = shuffle(getArrayDiff(usersMatch, groupToRemove))
-
-    profileCounter = 0
-
-    db.user.find({
-      where: {id: groupOfUsers[profileCounter]}
-    }).then(function(user) {
-
-      db.specialization.find({
-        where: {id: req.params.specializationId}
-      }).then(function(specialization) {
-        res.render('user/browseProfile.ejs',{user:user, specialization: specialization})
-      });
-    });
   })
 })
 
-var groupOfUsers = []
-var currentSpecializationId
-var profileCounter;
-
 router.get('/:specializationId/next', function (req, res) {
   if (req.params.specializationId !== currentSpecializationId) {
-    redirect('/')
+    res.redirect('/')
   }
 
   profileCounter++
 
-  if (profileCounter < 0 || profileCounter >= groupOfUsers.length){
-    console.log("profile counter out of range")
+  if (profileCounter < 0 || profileCounter >= groupOfUsers.length) {
+    console.log('profile counter out of range')
     db.specialization.find({
       where: {id: req.params.specializationId}
-    }).then(function(specialization) {
+    }).then(function (specialization) {
       res.render('user/noneFound', {specialization: specialization})
-    });
+    })
   }
 
   db.user.find({
     where: {id: groupOfUsers[profileCounter]}
-  }).then(function(user) {
-
+  }).then(function (user) {
     db.specialization.find({
       where: {id: req.params.specializationId}
-    }).then(function(specialization) {
+    }).then(function (specialization) {
       res.render('user/browseProfile', {user: user, specialization: specialization})
-    });
-
-  });
-
+    })
+  })
 })
 
-
 router.get('/:specializationId/back', function (req, res) {
-
   if (req.params.specializationId !== currentSpecializationId) {
-    redirect('/')
+    res.redirect('/')
   }
   profileCounter--
 
-  if (profileCounter < 0 || profileCounter >= groupOfUsers.length){
-    console.log("profile counter out of range")
+  if (profileCounter < 0 || profileCounter >= groupOfUsers.length) {
+    console.log('profile counter out of range')
     db.specialization.find({
       where: {id: req.params.specializationId}
-    }).then(function(specialization) {
+    }).then(function (specialization) {
       res.render('user/noneFound', {specialization: specialization})
-    });
+    })
   }
 
   db.user.find({
     where: {id: groupOfUsers[profileCounter]}
-  }).then(function(user) {
-
+  }).then(function (user) {
     db.specialization.find({
       where: {id: req.params.specializationId}
-    }).then(function(specialization) {
+    }).then(function (specialization) {
       res.render('user/browseProfile', {user: user, specialization: specialization})
-    });
-
-  });
-
+    })
+  })
 })
 
-
 router.post('/:userId/connect', function (req, res) {
-    db.friend.findOrCreate({
+  db.friend.findOrCreate({
     where: {
       fromUserId: req.session.passport.user,
       toUserId: req.params.userId
     },
-    defaults: { status: "pending" }
-  }).spread(function(user, created) {
+    defaults: { status: 'pending' }
+  }).spread(function (user, created) {
     res.end()
   })
 })
-
-
 
 function shuffle (array) {
   var currentIndex = array.length, temporaryValue, randomIndex

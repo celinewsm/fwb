@@ -41,7 +41,7 @@ module.exports = function (sequelize, DataTypes) {
     phone: {
       type: DataTypes.INTEGER,
       notEmpty: false,
-      allowNull: true,
+      allowNull: true
       // validate: {
       //   len: {
       //     args: [8],
