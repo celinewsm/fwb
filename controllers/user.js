@@ -234,6 +234,18 @@ router.get('/friendRequests', function (req, res) {
   })
 })
 
+router.get('/browse/:userId', function (req, res) {
+  db.user.find({
+    where: {id: req.params.userId}
+  }).then(function(user) {
+
+    db.specialization.find({
+      where: {id: user.specializationId }
+    }).then(function (specialization) {
+      res.render('user/userProfile', {user: user, specialization: specialization})
+    })
+  });
+})
 
 router.get('/contacts', function (req, res) {
   res.render('user/contacts')

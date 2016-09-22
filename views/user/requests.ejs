@@ -12,8 +12,9 @@
           <img class="circle smallProfile" src="<%= requestsList[i].profileImg %>" alt="" />
         </div>
         <div class="col s8 m8">
-          <h5><%= requestsList[i].firstName %> <%= requestsList[i].lastName %></h5>
-          <p><%= specializList[i] %></p>
+            <a href="/user/browse/<%= requestsList[i].id %>"><h5><%= requestsList[i].firstName %> <%= requestsList[i].lastName %></h5></a>
+            <a href="/user/<%= requestsList[i].specializationId %>"><p><%= specializList[i] %></p></a>
+
         </div>
 
         <div class="col s12 m2 center">
