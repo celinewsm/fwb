@@ -1,5 +1,8 @@
 $(document).ready(function () {
   console.log("main.js connected")
+
+  $('#mainAuth').css("top",(($(window).height()-$('#mainAuth').height())/2-13) )
+
   $('.button-collapse').sideNav()
   $('select').material_select()
 
@@ -93,9 +96,5 @@ $(".reject2").click(function(event){
     console.log('error rejecting friend')
   })
 });
-
-
-
-// Materialize.toast('I am a toast!', 4000) // 4000 is the duration of the toast
 
 })

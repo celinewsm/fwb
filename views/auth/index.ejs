@@ -1,10 +1,46 @@
-<div class="row">
-  <div class="col s10 m6 offset-s1 offset-m3 red mainAuth">
-    <div class="center-align">
-      <h2>LOGO</h2>
+<!-- <div class="row">
+  <div class="col s10 m6 offset-s1 offset-m3 red" id="mainAuth">
+    <div class="center">
+      <h3>LOGO</h3>
+    </div>
+
+    <div class="center-align ">
       <a href="/auth/login" class="waves-effect waves-light btn">Login</a><br/><br/>
       <a href="/auth/signup" class="waves-effect waves-light btn">Sign Up</a><br/><br/>
     </div>
+
+  </div>
+</div> -->
+
+<div class="bg-gradient"></div>
+<div class="row">
+  <div class="col s10 m4 offset-s1 offset-m4 center allWhite" id="mainAuth">
+    <div class="spacer">
+    </div>
+    <div class="center logoFont">
+      <h1 class="offWhite-text">fwb</h1>
+    </div>
+    <form action="/auth/login" method="POST">
+      <div class="col s10 offset-s1">
+        <div class="form-group input-field">
+          <label for="authEmail" class="offWhite-text">Email</label>
+          <input id="authEmail" class="form-control offWhite-text" type="email" name="email">
+        </div>
+
+        <div class="form-group input-field">
+          <label for="authPassword" class="offWhite-text">Password</label>
+          <input id="authPassword" class="form-control offWhite-text" type="password" name="password">
+        </div>
+        <div class="spacer">
+        </div>
+        <input class="whiteStrokeBtn" type="submit" value="Login">
+        <div class="spacer">
+        </div>
+        <a href="/auth/signup"><button class="whiteStrokeBtn" type="button" name="button">New user</button></a><br/><br/>
+
+      </div>
+
+    </form>
 
   </div>
 </div>

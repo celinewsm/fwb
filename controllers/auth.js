@@ -39,12 +39,12 @@ router.post('/signup', function(req, res) {
 });
 
 router.get('/login', function(req, res) {
-  res.render('auth/login');
+  res.render('auth/');
 });
 
 router.post('/login', passport.authenticate('local', {
   successRedirect: '/user',
-  failureRedirect: '/auth/login',
+  failureRedirect: '/auth/',
   failureFlash: 'Invalid username and/or password',
   successFlash: 'You have logged in'
 }));

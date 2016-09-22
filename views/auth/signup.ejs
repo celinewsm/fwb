@@ -1,5 +1,5 @@
-<div class="row">
-  <div class="col s10 m6 offset-s1 offset-m3">
+<!-- <div class="row">
+  <div class="col s10 m6 offset-s1 offset-m3" id="mainAuth">
     <h2>Sign Up</h2>
     <form action="/auth/signup" method="POST">
 
@@ -25,6 +25,66 @@
 
       <input class="waves-effect waves-light btn" type="submit">
       <a href="/auth/" class="waves-effect waves-light btn">Back</a>
+    </form>
+  </div>
+</div> -->
+
+
+
+<!-- <div class="row">
+  <div class="col s10 m6 offset-s1 offset-m3 red" id="mainAuth">
+    <div class="center">
+      <h3>LOGO</h3>
+    </div>
+
+    <div class="center-align ">
+      <a href="/auth/login" class="waves-effect waves-light btn">Login</a><br/><br/>
+      <a href="/auth/signup" class="waves-effect waves-light btn">Sign Up</a><br/><br/>
+    </div>
+
+  </div>
+</div> -->
+
+<div class="bg-gradient"></div>
+<div class="row">
+  <div class="col s10 m6 offset-s1 offset-m3 center allWhite" id="mainAuth">
+    <div class="spacer">
+    </div>
+    <div class="center logoFont">
+      <h1 class="offWhite-text">fwb</h1>
+    </div>
+    <form action="/auth/signup" method="POST" class="col s10 offset-s1">
+
+      <div class="form-group input-field">
+        <label for="authFirstName" class="offWhite-text">First Name</label>
+        <input id="authFirstName" class="form-control offWhite-text" type="text" name="firstName">
+      </div>
+
+      <div class="form-group input-field">
+        <label for="authLastName" class="offWhite-text">Last Name</label>
+        <input id="authLastName" class="form-control offWhite-text" type="text" name="lastName">
+      </div>
+
+      <div class="form-group input-field">
+        <label for="authEmail" class="offWhite-text">Email</label>
+        <input id="authEmail" class="form-control offWhite-text" type="email" name="email">
+      </div>
+
+      <div class="form-group input-field">
+        <label for="authPassword" class="offWhite-text">Password</label>
+        <input id="authPassword" class="form-control offWhite-text" type="password" name="password">
+      </div>
+
+      <input class="whiteStrokeBtn" type="submit" value="Sign Up">
+      <div class="spacer">
+
+      </div>
+      <a href="/auth/"><button type="button" name="button" class="whiteStrokeBtn">Back</button></a>
+      <div class="spacer">
+      </div>
+      <div class="spacer">
+      </div>
+
     </form>
   </div>
 </div>

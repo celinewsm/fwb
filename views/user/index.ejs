@@ -2,27 +2,25 @@
 
 <div class="row">
   <div class="center">
+    <div class="spacer">
+    </div>
     <h5>Hi <%- currentUser.firstName %>,</h5>
     <p>Who would you like to know?</p>
   </div>
 
-<div class="col s10 offset-s1">
-  <div class="center selectSpecialization">
+<div class="col s10 m4 offset-s1 offset-m4">
+  <div class="center selectSpecialization button">
     <% for (var i = 0 ; i < specialization.length; i++) { %>
-      <p>
       <%  if ( specialization[i][1] != 4 ) { %>
-        <a href="/user/<%= specialization[i][1] %>" class="btn"><%= specialization[i][0] %></a>
-      </p>
+        <a href="/user/<%= specialization[i][1] %>"><button type="button" class="gradBtn" name="button"><%= specialization[i][0] %></button></a>
+        <div class="spacer">
+        </div>
       <% } %>
   <%  } %>
-      <a href="/user/4" class="btn">Others</a>
+      <a href="/user/4"><button type="button" class="gradBtn" name="button">Others</button></a>
 
   </div>
-  <div class="center">
-    <p>
-      <a href="/user/random" class="btn red">Surprise me</a>
-    </p>
-  </div>
+
 </div>
 
 
