@@ -13,4 +13,18 @@ $(document).ready(function () {
     $(this).closest('form').submit();
   })
 
+  $("#connecting").click(function(event){
+    event.preventDefault()
+    var userId = $("form input")[0].value
+    var params = {userId: userId};
+
+    $.post("/user/"+userId+"/connect", params, function(data) {
+      console.log(data)
+      Materialize.toast('Request Sent!', 4000)
+      $("#connectButton").val("Request Sent")
+    });
+});
+
+// Materialize.toast('I am a toast!', 4000) // 4000 is the duration of the toast
+
 })
