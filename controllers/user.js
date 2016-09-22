@@ -193,6 +193,51 @@ router.put('/friendRequests/reject', function (req, res) {
   })
 })
 
+router.get('/friendRequests', function (req, res) {
+  var tempRequestList = []
+  db.friend.findAll({
+    where:{
+      toUserId: req.session.passport.user,
+      status: 'pending'
+    }
+  }).then(function(friendRequestsList){
+
+    if (friendRequestsList.length === 0) {
+      res.render('user/noRequests')
+    }
+
+    var j = 0;
+    for (var i = 0 ; i < friendRequestsList.length ; i++ ){
+      // console.log("friendRequestsList[i].fromUserId>>>>>>",friendRequestsList[i].fromUserId)
+      db.user.findById(friendRequestsList[i].fromUserId).then(function(foundUser) {
+        // console.log("foundUser>>>>>>>>>>>>>>>>>",foundUser)
+        tempRequestList.push(foundUser)
+        j++
+        if (j === friendRequestsList.length) {
+          console.log("tempRequestList>>>>",tempRequestList);
+
+          var tempSpecializationList = []
+          var l = 0;
+          for (var k = 0; k < tempRequestList.length; k++) {
+            db.specialization.findById(tempRequestList[k].specializationId).then(function(foundSpecialization){
+              tempSpecializationList.push(foundSpecialization.term)
+              l++
+              if (l === tempRequestList.length) {
+                res.render('user/requests', {requestsList: tempRequestList, specializList: tempSpecializationList})
+              }
+            })
+
+          }
+        }
+      });
+    }
+  })
+})
+
+
+router.get('/contacts', function (req, res) {
+  res.render('user/contacts')
+})
 
 var groupOfUsers = []
 var currentSpecializationId
