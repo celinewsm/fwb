@@ -1,7 +1,4 @@
 'use strict'
-
-var DataTypes = require('Sequelize').DataTypes
-
 module.exports = {
   up: function(queryInterface, Sequelize) {
     return queryInterface.createTable('users', {
