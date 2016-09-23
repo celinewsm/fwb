@@ -259,7 +259,7 @@ router.get('/browse/:userId', function (req, res) {
     db.specialization.find({
       where: {id: user.specializationId }
     }).then(function (specialization) {
-      res.render('user/previewProfile', {user: user, specialization: specialization})
+      res.render('user/userProfile', {user: user, specialization: specialization})
     })
   });
 })
@@ -272,6 +272,12 @@ router.get('/contacts', function (req, res) {
       $or: [{fromUserId: req.session.passport.user}, {toUserId: req.session.passport.user}]
     }
   }).then(function(friendList){
+
+    if (friendList.length === 0) {
+      res.render('user/noFriends')
+    }
+
+
     console.log("found friend list", friendList)
     var tempArray = []
     var j = 0

@@ -88,13 +88,18 @@ $(".reject2").click(function(event){
     data: {userRequestRejected: this.value},
     dataType: 'json'
   }).done(function (data) {
-
     $("#toEmpty").empty()
     $("#toEmpty").append('<div class="center"><h3>User rejected.</h3><a class="btn" href="/user/friendRequests">More requests</a></div>')
-
   }).fail(function () {
     console.log('error rejecting friend')
   })
-});
+})
+
+$("#delete").click(function(event){
+  $("#delete").empty()
+  $("#delete").append("<a href='/user/deleteUser'>Click again to confirm delete</a>")
+})
+
+
 
 })

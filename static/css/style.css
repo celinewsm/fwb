@@ -5,6 +5,11 @@ body {
 
 #mainAuth {
   position: fixed;
+  /*border-radius: 7px;
+  border: 5px rgba(255,255,255,0.7) solid;*/
+}
+
+.whiteBorder {
   border-radius: 7px;
   border: 5px rgba(255,255,255,0.7) solid;
 }
