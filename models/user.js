@@ -41,25 +41,15 @@ module.exports = function (sequelize, DataTypes) {
     phone: {
       type: DataTypes.INTEGER,
       notEmpty: false,
-      allowNull: true
-      // validate: {
-      //   len: {
-      //     args: [8],
-      //     msg: 'Phone must be 8 characters'
-      //   }
-      // }
+      allowNull: true,
+      validate: {
+        len: {
+          args: [8],
+          msg: 'Phone must be 8 numbers'
+        }
+      }
     },
-    link: {
-      type: DataTypes.TEXT
-      // notEmpty: false,
-      // allowNull: true,
-      // validate: {
-      //   isUrl: true,
-      //   len: {
-      //     msg: 'Insert valid link'
-      //   }
-      // }
-    },
+    link: DataTypes.TEXT,
     specializationId: DataTypes.INTEGER,
     bio: DataTypes.STRING,
     skills: DataTypes.STRING,

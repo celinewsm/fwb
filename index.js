@@ -30,7 +30,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(function(req, res, next) {
-  // before every route, attach the flash messages and current user to res.locals
   res.locals.alerts = req.flash();
   res.locals.currentUser = req.user;
   next();
@@ -38,7 +37,6 @@ app.use(function(req, res, next) {
 
 app.use('/auth', require('./controllers/auth'))
 app.use('/user', isLoggedIn, require('./controllers/user'))
-app.use('/guest', require('./controllers/guest'))
 
 app.get('/', isLoggedIn, function(req, res) {
   res.redirect('/user/');

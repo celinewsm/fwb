@@ -5,8 +5,6 @@ body {
 
 #mainAuth {
   position: fixed;
-  /*border-radius: 7px;
-  border: 5px rgba(255,255,255,0.7) solid;*/
 }
 
 .whiteBorder {
@@ -27,7 +25,6 @@ body {
   width: 150px;
   height: 150px;
   border: 0;
-  /*border-radius: 10px;*/
   object-fit: cover;
 }
 
@@ -113,12 +110,6 @@ height:100px !important;}
   color: white;
 }
 
-
-
-
-
-
-
 html, body {
   width: 100%;
   height: 100%;
@@ -196,7 +187,7 @@ html, body {
   background: transparent;
   border: 4px solid transparent;
   padding: 1em 2em 1em 2em;
-  /*-moz-border-image: -moz-linear-gradient(top right, #FC913A 0%, #FF4E50 100%);*/
+  -moz-border-image: -moz-linear-gradient(top right, #FC913A 0%, #FF4E50 100%);
   -webkit-border-image: -webkit-linear-gradient(to left, #FF4437 , #241490);
   border-image: linear-gradient(to left, #FF4437 , #241490);
   border-image-slice: 1;
@@ -212,19 +203,10 @@ html, body {
   width:80%;
 }
 
+a {
+  color: rgba(0,0,0,0.7)
+}
 
-.gradBtn-sml {
-  background: transparent;
-  border: 4px solid transparent;
-  padding: 1em 2em 1em 2em;
-  /*-moz-border-image: -moz-linear-gradient(top right, #FC913A 0%, #FF4E50 100%);*/
-  -webkit-border-image: -webkit-linear-gradient(to left, #FF4437 , #241490);
-  border-image: linear-gradient(to left, #FF4437 , #241490);
-  border-image-slice: 1;
-
-  background: linear-gradient(to left, #FF4437 , #241490);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-transform: uppercase;
-  font-weight: 700;
+a:hover {
+  color: black;
 }

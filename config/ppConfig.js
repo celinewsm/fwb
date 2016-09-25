@@ -17,7 +17,7 @@ passport.use(new LocalStrategy({
   passwordField: 'password'
 }, function(email, password, cb) {
   db.user.find({
-    where: { email: email }
+    where: { email: email.toLowerCase() }
   }).then(function(user) {
     if (!user || !user.validPassword(password)) {
       cb(null, false);

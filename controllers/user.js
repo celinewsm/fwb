@@ -1,11 +1,8 @@
 var express = require('express')
 var db = require('../models')
-// var passport = require('../config/ppConfig')
-// var isLoggedIn = require('../middleware/isLoggedIn')
 var router = express.Router()
 var multer = require('multer')
 var upload = multer({ dest: 'static/img/uploads/' })
-// var dotenv = require('dotenv').config()
 var cloudinary = require('cloudinary')
 
 router.get('/', function (req, res) {
@@ -35,7 +32,7 @@ router.post('/profile', function (req, res) {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     specializationId: req.body.specialization,
-    phone: req.body.phone,
+    phone: parseInt(req.body.phone),
     bio: req.body.bio,
     skills: req.body.skills,
     link: req.body.link
@@ -45,12 +42,14 @@ router.post('/profile', function (req, res) {
     }
   }).then(function (user) {
     res.redirect('/user/profile')
+  }).catch(function(error){
+    req.flash('error', error.message);
+    res.redirect('/user/profile');
   })
 })
 
 router.post('/profile/upload', upload.single('avatar'), function (req, res, next) {
   cloudinary.uploader.upload(req.file.path, function (result) {
-    // res.send(result)
     db.user.update({
       profileImg: result.url
     }, {
@@ -108,68 +107,40 @@ router.post('/img3/upload', upload.single('img3'), function (req, res, next) {
 router.get('/deleteUser', function (req, res) {
   db.user.destroy({
     where: { id: req.session.passport.user }
-    }).then(function() {
-
-      db.friend.destroy({
-        where: {
-          $or: [{fromUserId: req.session.passport.user}, {toUserId: req.session.passport.user}]
-        }
-        }).then(function() {
-          req.flash('success', 'Account Deleted');
-          res.redirect('/auth/')
-      });
-  });
+  }).then(function () {
+    db.friend.destroy({
+      where: {
+        $or: [{fromUserId: req.session.passport.user}, {toUserId: req.session.passport.user}]
+      }
+    }).then(function () {
+      req.flash('success', 'Account Deleted')
+      res.redirect('/auth/')
+    })
+  })
 })
-
-
-Array.prototype.unique = function (mutate) {
-  var unique = this.reduce(function (accum, current) {
-    if (accum.indexOf(current) < 0) {
-      accum.push(current)
-    }
-    return accum
-  }, [])
-  if (mutate) {
-    this.length = 0
-    for (var i = 0; i < unique.length; ++i) {
-      this.push(unique[i])
-    }
-    return this
-  }
-  return unique
-}
 
 router.get('/friendRequests', function (req, res) {
   var tempRequestList = []
   db.friend.findAll({
-    where:{
+    where: {
       toUserId: req.session.passport.user,
       status: 'pending'
     }
-  }).then(function(friendRequestsList){
-
+  }).then(function (friendRequestsList) {
     if (friendRequestsList.length === 0) {
       res.render('user/noRequests')
     }
-
-    var j = 0;
-    for (var i = 0 ; i < friendRequestsList.length ; i++ ){
-      // console.log("friendRequestsList[i].fromUserId>>>>>>",friendRequestsList[i].fromUserId)
-      db.user.findById(friendRequestsList[i].fromUserId).then(function(foundUser) {
-        // console.log("foundUser>>>>>>>>>>>>>>>>>",foundUser)
+    var j = 0
+    for (var i = 0; i < friendRequestsList.length; i++) {
+      db.user.findById(friendRequestsList[i].fromUserId).then(function (foundUser) {
         tempRequestList.push(foundUser)
         j++
         if (j === friendRequestsList.length) {
-          console.log("tempRequestList>>>>",tempRequestList);
-
+          console.log('tempRequestList>>>>', tempRequestList)
           var tempSpecializationList = []
-          var l = 0;
+          var l = 0
           for (var k = 0; k < tempRequestList.length; k++) {
-            console.log("tempRequestList 2 >>>>",tempRequestList);
-            console.log("tempRequestList[k]",tempRequestList[k])
-            console.log("tempRequestList[k].specializationId>>>>",tempRequestList[k].specializationId)
-            db.specialization.findById(tempRequestList[k].specializationId).then(function(foundSpecialization){
-              console.log("foundSpecialization>>>>>>",foundSpecialization)
+            db.specialization.findById(tempRequestList[k].specializationId).then(function (foundSpecialization) {
               tempSpecializationList.push(foundSpecialization.term)
               l++
               if (l === tempRequestList.length) {
@@ -178,13 +149,13 @@ router.get('/friendRequests', function (req, res) {
             })
           }
         }
-      });
+      })
     }
   })
 })
 
 router.put('/friendRequests/accept', function (req, res) {
-  console.log("req.body.userRequestAccepted>>>",req.body.userRequestAccepted)
+  console.log('req.body.userRequestAccepted>>>', req.body.userRequestAccepted)
   db.friend.update({
     status: 'accepted'
   }, {
@@ -213,123 +184,138 @@ router.put('/friendRequests/reject', function (req, res) {
 router.get('/friendRequests', function (req, res) {
   var tempRequestList = []
   db.friend.findAll({
-    where:{
+    where: {
       toUserId: req.session.passport.user,
       status: 'pending'
     }
-  }).then(function(friendRequestsList){
-
+  }).then(function (friendRequestsList) {
     if (friendRequestsList.length === 0) {
       res.render('user/noRequests')
     }
 
-    var j = 0;
-    for (var i = 0 ; i < friendRequestsList.length ; i++ ){
-      // console.log("friendRequestsList[i].fromUserId>>>>>>",friendRequestsList[i].fromUserId)
-      db.user.findById(friendRequestsList[i].fromUserId).then(function(foundUser) {
-        // console.log("foundUser>>>>>>>>>>>>>>>>>",foundUser)
+    var j = 0
+    for (var i = 0; i < friendRequestsList.length; i++) {
+      db.user.findById(friendRequestsList[i].fromUserId).then(function (foundUser) {
         tempRequestList.push(foundUser)
         j++
         if (j === friendRequestsList.length) {
-          console.log("tempRequestList>>>>",tempRequestList);
+          console.log('tempRequestList>>>>', tempRequestList)
 
           var tempSpecializationList = []
-          var l = 0;
+          var l = 0
           for (var k = 0; k < tempRequestList.length; k++) {
-            db.specialization.findById(tempRequestList[k].specializationId).then(function(foundSpecialization){
+            db.specialization.findById(tempRequestList[k].specializationId).then(function (foundSpecialization) {
               tempSpecializationList.push(foundSpecialization.term)
               l++
               if (l === tempRequestList.length) {
                 res.render('user/requests', {requestsList: tempRequestList, specializList: tempSpecializationList})
               }
             })
-
           }
         }
-      });
+      })
     }
+  })
+})
+
+router.get('/preview/:userId', function (req, res) {
+  db.user.find({
+    where: {id: req.params.userId}
+  }).then(function (user) {
+    db.specialization.find({
+      where: {id: user.specializationId }
+    }).then(function (specialization) {
+      res.render('user/previewProfile', {user: user, specialization: specialization})
+    })
   })
 })
 
 router.get('/browse/:userId', function (req, res) {
   db.user.find({
     where: {id: req.params.userId}
-  }).then(function(user) {
-
+  }).then(function (user) {
     db.specialization.find({
       where: {id: user.specializationId }
     }).then(function (specialization) {
       res.render('user/userProfile', {user: user, specialization: specialization})
     })
-  });
+  })
 })
 
-router.get('/contacts', function (req, res) {
+// for function for removing repeats in array
+Array.prototype.unique = function (mutate) {
+  var unique = this.reduce(function (accum, current) {
+    if (accum.indexOf(current) < 0) {
+      accum.push(current)
+    }
+    return accum
+  }, [])
+  if (mutate) {
+    this.length = 0
+    for (var i = 0; i < unique.length; ++i) {
+      this.push(unique[i])
+    }
+    return this
+  }
+  return unique
+}
 
+router.get('/contacts', function (req, res) {
+  // find from friends table all users with to and from requests with status as "accepted"
   db.friend.findAll({
     where: {
       status: 'accepted',
       $or: [{fromUserId: req.session.passport.user}, {toUserId: req.session.passport.user}]
     }
-  }).then(function(friendList){
-
+  }).then(function (friendList) {
+    // in the instance when user has no friends
     if (friendList.length === 0) {
       res.render('user/noFriends')
     }
-
-
-    console.log("found friend list", friendList)
     var tempArray = []
     var j = 0
-    for ( var i = 0 ; i < friendList.length ; i++ ) {
+    for ( var i = 0; i < friendList.length; i++) {
       tempArray.push(friendList[i].fromUserId)
       tempArray.push(friendList[i].toUserId)
       j++
-      if(j === friendList.length) {
-        console.log("CLEARING J LOOOOOOOOP")
-
+      if (j === friendList.length) {
+        console.log('CLEARING J LOOOOOOOOP')
         tempArray = tempArray.unique()
-        console.log("tempArray>>>>>>>>>",tempArray)
-        console.log("req.session.passport.user",req.session.passport.user);
-        // console.log(tempArray.findIndex(req.session.passport.user))
+        console.log('req.session.passport.user', req.session.passport.user)
         var indexToRemove = tempArray.indexOf(parseInt(req.session.passport.user))
         tempArray.splice(indexToRemove, 1)
 
         var friendsDetails = []
-        var l = 0;
-        for ( var k = 0 ; k < tempArray.length ; k++) {
-
-          console.log("logging indiv users. current: " + k)
+        var l = 0
+        for ( var k = 0; k < tempArray.length; k++) {
+          console.log('logging indiv users. current: ' + k)
 
           db.user.find({
             where: {id: tempArray[k]}
-          }).then(function(user) {
+          }).then(function (user) {
+            friendsDetails.push(user)
+            l++
+            if (l === tempArray.length) {
+              console.log('CLEARING L LOOOOOOOOP')
 
-              friendsDetails.push(user)
-              l++
-              if (l === tempArray.length) {
-
-                console.log("CLEARING L LOOOOOOOOP")
-
-                var tempSpecializationList = []
-                var m = 0;
-                console.log("tempArray>>>>>>>>>>>",tempArray)
-                for (var n = 0; n < friendsDetails.length; n++) {
-                  console.log("friendsDetails[n].specializationId",friendsDetails[n].specializationId)
-                  db.specialization.findById(friendsDetails[n].specializationId).then(function(foundSpecialization){
-                    console.log("foundSpecialization>>>>>> ", foundSpecialization);
-                    tempSpecializationList.push(foundSpecialization.term)
-                    m++
-                    if (m === tempArray.length) {
-                      console.log("CLEARING M LOOOOOOOOP")
-                      console.log("tempSpecializationList>>>>>>>",tempSpecializationList)
-                      res.render('user/contacts',{friends: friendsDetails, specializList: tempSpecializationList})
-                    }
-                  })
-                }
+              var tempSpecializationList = []
+              var m = 0
+              console.log('tempArray>>>>>>>>>>>', tempArray)
+              for (var n = 0; n < friendsDetails.length; n++) {
+                console.log('friendsDetails[n].specializationId', friendsDetails[n].specializationId)
+                db.specialization.findById(friendsDetails[n].specializationId).then(function (foundSpecialization) {
+                  console.log('foundSpecialization>>>>>> ', foundSpecialization)
+                  tempSpecializationList.push(foundSpecialization.term)
+                  m++
+                  if (m === tempArray.length) {
+                    console.log('CLEARING M LOOOOOOOOP')
+                    console.log('tempSpecializationList>>>>>>>', tempSpecializationList)
+                    res.render('user/contacts', {friends: friendsDetails, specializList: tempSpecializationList})
+                  }
+                })
               }
-          });
-
+            }
+          })
         }
       }
     }
@@ -341,6 +327,7 @@ var currentSpecializationId
 var profileCounter
 router.get('/:specializationId', function (req, res) {
   currentSpecializationId = req.params.specializationId
+  // find everyone with this specialization
   db.user.findAll({
     where: {specializationId: req.params.specializationId}
   }).then(function (users) {
@@ -360,7 +347,7 @@ router.get('/:specializationId', function (req, res) {
     db.friend.findAll().then(function (allFriends) {
       if (allFriends.length !== 0) {
         for (var j = 0; j < allFriends.length; j++) {
-          if(allFriends[j].fromUserId === req.session.passport.user || allFriends[j].toUserId === req.session.passport.user ){
+          if (allFriends[j].fromUserId === req.session.passport.user || allFriends[j].toUserId === req.session.passport.user) {
             groupToRemove.push(allFriends[j].fromUserId)
             groupToRemove.push(allFriends[j].toUserId)
           }
@@ -368,7 +355,6 @@ router.get('/:specializationId', function (req, res) {
       }
       groupToRemove.push(req.session.passport.user)
       groupToRemove = groupToRemove.unique()
-
       // user IDs stored in groupOfUsers
       groupOfUsers = shuffle(getArrayDiff(usersMatch, groupToRemove))
 
@@ -462,15 +448,9 @@ router.post('/:userId/connect', function (req, res) {
 
 function shuffle (array) {
   var currentIndex = array.length, temporaryValue, randomIndex
-
-  // While there remain elements to shuffle...
   while (0 !== currentIndex) {
-
-    // Pick a remaining element...
     randomIndex = Math.floor(Math.random() * currentIndex)
     currentIndex -= 1
-
-    // And swap it with the current element.
     temporaryValue = array[currentIndex]
     array[currentIndex] = array[randomIndex]
     array[randomIndex] = temporaryValue

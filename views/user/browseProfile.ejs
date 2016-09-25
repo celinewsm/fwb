@@ -39,6 +39,9 @@
     <div class="col s12 center">
       <p>
         <i><%= user.bio %></i>
+        <%  if (!user.bio) { %>
+          <%= user.firstName %> left the bio empty <br/> (╯°□°)╯︵ ┻━┻
+        <%  } %>
       </p>
       <div class="col s10 offset-s1 blue-grey lighten-5">
         <p>
@@ -55,30 +58,9 @@
       <div class="col s10 offset-s1 blue-grey lighten-1 white-text profileContact">
         <div class="spacer col s12">
         </div>
-
         <p>
           Connect with <%= user.firstName %> for contact details.
         </p>
-
-        <!-- <p>
-          email: <br/>
-          <%= user.email %>
-        </p>
-        <%  if(user.phone) { %>
-            <p>
-              phone: <br/>
-            <%= user.phone %>
-            </p>
-        <%  } %>
-        <%  if(user.link){ %>
-            <p>
-              link: <br/>
-              <a href="<%= user.link %>"><%= user.link %></a>
-            </p>
-        <%  } %>
-        <div class="spacer col s12">
-        </div> -->
-
       </div>
 
     </div>
@@ -93,7 +75,6 @@
   </div>
 
   <div class="spacer col s12">
-
   </div>
 
   </div>

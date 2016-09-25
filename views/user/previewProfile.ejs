@@ -33,6 +33,9 @@
       <div class="col s12 center">
         <p>
           <i><%= user.bio %></i>
+          <%  if (!user.bio) { %>
+            <%= user.firstName %> left the bio empty <br/> (╯°□°)╯︵ ┻━┻
+          <%  } %>
         </p>
         <div class="col s10 offset-s1 blue-grey lighten-5">
           <p>
@@ -50,35 +53,14 @@
           <div class="spacer col s12">
           </div>
           <p>
-            email: <br/>
-            <%= user.email %>
+            Accept connection request from <%= user.firstName %> for contact details.
           </p>
-          <%  if(user.phone) { %>
-              <p>
-                phone: <br/>
-              <%= user.phone %>
-              </p>
-          <%  } %>
-          <%  if(user.link){ %>
-              <p>
-                link: <br/>
-                <a href="<%= user.link %>"><%= user.link %></a>
-              </p>
-          <%  } %>
-          <div class="spacer col s12">
-          </div>
         </div>
 
       </div>
       <div class="spacer col s12">
       </div>
     <div class="center">
-
-      <!-- <form id="connecting">
-        <input type="hidden" name="userId" value="<%= user.id %>">
-        <input id="connectButton" class="btn-large waves-effect darken-text-2" type="submit" name="name" value="Connect">
-      </form> -->
-
       <div class="col s12 center">
         <button value="<%= user.id %>" class="accept2 z-depth-1 acceptReject waves-effect" type="button" name="button">Accept</button>
         <button value="<%= user.id %>" class="reject2 z-depth-1 acceptReject waves-effect" type="button" name="button">Reject</button>
