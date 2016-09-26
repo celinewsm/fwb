@@ -4,6 +4,9 @@ var router = express.Router()
 var multer = require('multer')
 var upload = multer({ dest: 'static/img/uploads/' })
 var cloudinary = require('cloudinary')
+var methodOverride = require('method-override')
+
+router.use(methodOverride('_method'))
 
 router.get('/', function (req, res) {
   db.specialization.findAll().then(function (specializations) {

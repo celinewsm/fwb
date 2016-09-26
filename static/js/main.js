@@ -39,7 +39,7 @@ $(document).ready(function () {
       $('#' + data).empty()
       // message to be appended if friend request list is empty after ajax
       if ($('.card-panel').length === 0) {
-        $('.toEmpty').append('<div class="center" id="mainAuth"><h5>No more user requests.</h5><a href="/user/contacts"><button type="button" class="gradBtn" name="button">View contacts</button></b></a>')
+        $('.toEmpty').append('<div class="center" id="mainAuth"><h5>No more user requests.</h5><a href="/user/contacts?_method=DELETE"><button type="button" class="gradBtn" name="button">View contacts</button></b></a>')
         alignMainAuth()
       }
     }).fail(function () {
