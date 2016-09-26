@@ -32,7 +32,7 @@ router.post('/profile', function (req, res) {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     specializationId: req.body.specialization,
-    phone: parseInt(req.body.phone),
+    phone: req.body.phone,
     bio: req.body.bio,
     skills: req.body.skills,
     link: req.body.link
@@ -42,9 +42,9 @@ router.post('/profile', function (req, res) {
     }
   }).then(function (user) {
     res.redirect('/user/profile')
-  }).catch(function(error){
-    req.flash('error', error.message);
-    res.redirect('/user/profile');
+  }).catch(function (error) {
+    req.flash('error', error.message)
+    res.redirect('/user/profile')
   })
 })
 
@@ -223,7 +223,7 @@ router.get('/preview/:userId', function (req, res) {
     where: {id: req.params.userId}
   }).then(function (user) {
     db.specialization.find({
-      where: {id: user.specializationId }
+      where: { id: user.specializationId }
     }).then(function (specialization) {
       res.render('user/previewProfile', {user: user, specialization: specialization})
     })
@@ -235,7 +235,7 @@ router.get('/browse/:userId', function (req, res) {
     where: {id: req.params.userId}
   }).then(function (user) {
     db.specialization.find({
-      where: {id: user.specializationId }
+      where: { id: user.specializationId }
     }).then(function (specialization) {
       res.render('user/userProfile', {user: user, specialization: specialization})
     })
@@ -274,7 +274,7 @@ router.get('/contacts', function (req, res) {
     }
     var tempArray = []
     var j = 0
-    for ( var i = 0; i < friendList.length; i++) {
+    for (var i = 0; i < friendList.length; i++) {
       tempArray.push(friendList[i].fromUserId)
       tempArray.push(friendList[i].toUserId)
       j++
@@ -282,34 +282,25 @@ router.get('/contacts', function (req, res) {
         console.log('CLEARING J LOOOOOOOOP')
         tempArray = tempArray.unique()
         console.log('req.session.passport.user', req.session.passport.user)
-        var indexToRemove = tempArray.indexOf(parseInt(req.session.passport.user))
+        var indexToRemove = tempArray.indexOf(parseInt(req.session.passport.user, 10))
         tempArray.splice(indexToRemove, 1)
 
         var friendsDetails = []
         var l = 0
-        for ( var k = 0; k < tempArray.length; k++) {
-          console.log('logging indiv users. current: ' + k)
-
+        for (var k = 0; k < tempArray.length; k++) {
           db.user.find({
             where: {id: tempArray[k]}
           }).then(function (user) {
             friendsDetails.push(user)
             l++
             if (l === tempArray.length) {
-              console.log('CLEARING L LOOOOOOOOP')
-
               var tempSpecializationList = []
               var m = 0
-              console.log('tempArray>>>>>>>>>>>', tempArray)
               for (var n = 0; n < friendsDetails.length; n++) {
-                console.log('friendsDetails[n].specializationId', friendsDetails[n].specializationId)
                 db.specialization.findById(friendsDetails[n].specializationId).then(function (foundSpecialization) {
-                  console.log('foundSpecialization>>>>>> ', foundSpecialization)
                   tempSpecializationList.push(foundSpecialization.term)
                   m++
                   if (m === tempArray.length) {
-                    console.log('CLEARING M LOOOOOOOOP')
-                    console.log('tempSpecializationList>>>>>>>', tempSpecializationList)
                     res.render('user/contacts', {friends: friendsDetails, specializList: tempSpecializationList})
                   }
                 })
@@ -448,7 +439,7 @@ router.post('/:userId/connect', function (req, res) {
 
 function shuffle (array) {
   var currentIndex = array.length, temporaryValue, randomIndex
-  while (0 !== currentIndex) {
+  while (currentIndex !== 0) {
     randomIndex = Math.floor(Math.random() * currentIndex)
     currentIndex -= 1
     temporaryValue = array[currentIndex]
@@ -468,7 +459,7 @@ function getArrayDiff (a, b) {
 
   for (i = a.length - 1; i >= 0; i--) {
     key = a[i]
-    if (-1 === b.indexOf(key)) {
+    if (b.indexOf(key) === -1) {
       ret.push(key)
     }
   }
