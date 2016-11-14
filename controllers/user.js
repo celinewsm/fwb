@@ -201,74 +201,97 @@ router.get('/browse/:userId', function (req, res) {
   })
 })
 
-// for function for removing repeats in array
-Array.prototype.unique = function (mutate) {
-  var unique = this.reduce(function (accum, current) {
-    if (accum.indexOf(current) < 0) {
-      accum.push(current)
-    }
-    return accum
-  }, [])
-  if (mutate) {
-    this.length = 0
-    for (var i = 0; i < unique.length; ++i) {
-      this.push(unique[i])
-    }
-    return this
-  }
-  return unique
-}
-
 router.get('/contacts', function (req, res) {
   // find from friends table all users with to and from requests with status as "accepted"
   db.friend.findAll({
     where: {
       status: 'accepted',
-      $or: [{fromUserId: req.session.passport.user}, {toUserId: req.session.passport.user}]
-    }
+      $or: [{fromUserId: req.session.passport.user}, {toUserId: req.session.passport.user}],
+  },
+  include: [{
+    model: db.user,
+    as: 'fromUserDetails',
+    attributes: {
+    exclude: ['password']
+    },
+    include: [{
+      model: db.specialization,
+      attributes: ['term'],
+    }]
+  },
+  {
+    model: db.user,
+    as: 'toUserDetails',
+    attributes: {
+    exclude: ['password']
+    },
+    include: [{
+      model: db.specialization,
+      attributes: ['term'],
+    }]
+  }],
+
   }).then(function (friendList) {
+
+    // friendList
+
+    console.log("REFACTORED FRIEND LIST OUTPUT>>>",refactoredFriendList)
     // in the instance when user has no friends
     if (friendList.length === 0) {
       res.render('user/noFriends')
-    }
-    var tempArray = []
-    var j = 0
-    for (var i = 0; i < friendList.length; i++) {
-      tempArray.push(friendList[i].fromUserId)
-      tempArray.push(friendList[i].toUserId)
-      j++
-      if (j === friendList.length) {
-        console.log('CLEARING J LOOOOOOOOP')
-        tempArray = tempArray.unique()
-        console.log('req.session.passport.user', req.session.passport.user)
-        var indexToRemove = tempArray.indexOf(parseInt(req.session.passport.user, 10))
-        tempArray.splice(indexToRemove, 1)
+    } else {
 
-        var friendsDetails = []
-        var l = 0
-        for (var k = 0; k < tempArray.length; k++) {
-          db.user.find({
-            where: {id: tempArray[k]}
-          }).then(function (user) {
-            friendsDetails.push(user)
-            l++
-            if (l === tempArray.length) {
-              var tempSpecializationList = []
-              var m = 0
-              for (var n = 0; n < friendsDetails.length; n++) {
-                db.specialization.findById(friendsDetails[n].specializationId).then(function (foundSpecialization) {
-                  tempSpecializationList.push(foundSpecialization.term)
-                  m++
-                  if (m === tempArray.length) {
-                    res.render('user/contacts', {friends: friendsDetails, specializList: tempSpecializationList})
-                  }
-                })
-              }
-            }
-          })
+      var refactoredFriendList = []
+      for (var i = 0 ; i < friendList.length ; i++){
+        if (friendList[i].toUserDetails.id !== req.session.passport.user){
+          refactoredFriendList.push(friendList[i].toUserDetails)
+        } else {
+          refactoredFriendList.push(friendList[i].fromUserDetails)
         }
       }
+
+
+      res.render('user/contacts', {friends: refactoredFriendList})
+
     }
+    // var tempArray = []
+    // var j = 0
+    // for (var i = 0; i < friendList.length; i++) {
+    //   tempArray.push(friendList[i].fromUserId)
+    //   tempArray.push(friendList[i].toUserId)
+    //   j++
+    //   if (j === friendList.length) {
+    //     console.log('CLEARING J LOOOOOOOOP')
+    //     tempArray = tempArray.unique()
+    //     console.log('req.session.passport.user', req.session.passport.user)
+    //     var indexToRemove = tempArray.indexOf(parseInt(req.session.passport.user, 10))
+    //     tempArray.splice(indexToRemove, 1)
+    //
+    //     var friendsDetails = []
+    //     var l = 0
+    //     for (var k = 0; k < tempArray.length; k++) {
+    //       db.user.find({
+    //         where: {id: tempArray[k]}
+    //       }).then(function (user) {
+    //         friendsDetails.push(user)
+    //         l++
+    //         if (l === tempArray.length) {
+    //           var tempSpecializationList = []
+    //           var m = 0
+    //           for (var n = 0; n < friendsDetails.length; n++) {
+    //             db.specialization.findById(friendsDetails[n].specializationId).then(function (foundSpecialization) {
+    //               tempSpecializationList.push(foundSpecialization.term)
+    //               m++
+    //               if (m === tempArray.length) {
+    //                 res.render('user/contacts', {friends: friendsDetails, specializList: tempSpecializationList})
+    //               }
+    //             })
+    //           }
+    //         }
+    //       })
+    //     }
+    //   }
+    // }
   })
 })
 
@@ -425,5 +448,24 @@ function getArrayDiff (a, b) {
 
   return ret
 }
+
+// for function for removing repeats in array
+Array.prototype.unique = function (mutate) {
+  var unique = this.reduce(function (accum, current) {
+    if (accum.indexOf(current) < 0) {
+      accum.push(current)
+    }
+    return accum
+  }, [])
+  if (mutate) {
+    this.length = 0
+    for (var i = 0; i < unique.length; ++i) {
+      this.push(unique[i])
+    }
+    return this
+  }
+  return unique
+}
+
 
 module.exports = router
