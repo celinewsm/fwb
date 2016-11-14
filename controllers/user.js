@@ -255,10 +255,11 @@ router.get('/contacts', function (req, res) {
   })
 })
 
-var groupOfUsers = []
-var currentSpecializationId
-var profileCounter
+
 router.get('/:specializationId', function (req, res) {
+  var groupOfUsers = []
+  var currentSpecializationId
+  var profileCounter
   currentSpecializationId = req.params.specializationId
   // find everyone with this specialization
   db.user.findAll({
@@ -292,7 +293,6 @@ router.get('/:specializationId', function (req, res) {
       groupOfUsers = shuffle(getArrayDiff(usersMatch, groupToRemove))
 
       profileCounter = 0
-
       if (profileCounter < 0 || profileCounter >= groupOfUsers.length) {
         console.log('profile counter out of range')
         db.specialization.find({
@@ -302,70 +302,36 @@ router.get('/:specializationId', function (req, res) {
         })
       }
       db.user.find({
-        where: {id: groupOfUsers[profileCounter]}
+        where: {id: groupOfUsers[profileCounter]},
+        include: [{
+          model: db.specialization,
+          attributes: ['term']
+        }]
       }).then(function (user) {
         db.specialization.find({
           where: {id: req.params.specializationId}
         }).then(function (specialization) {
-          res.render('user/browseProfile', {user: user, specialization: specialization})
+          res.render('user/browseProfile', {user: user, specialization: specialization, groupOfUsers: groupOfUsers})
         })
       })
     })
   })
 })
 
-router.get('/:specializationId/next', function (req, res) {
-  if (req.params.specializationId !== currentSpecializationId) {
-    res.redirect('/')
-  }
 
-  profileCounter++
-
-  if (profileCounter < 0 || profileCounter >= groupOfUsers.length) {
-    console.log('profile counter out of range')
-    db.specialization.find({
-      where: {id: req.params.specializationId}
-    }).then(function (specialization) {
-      res.render('user/noneFound', {specialization: specialization})
-    })
-  }
-
+router.get('/browseProfile/:userId', function (req, res) {
   db.user.find({
-    where: {id: groupOfUsers[profileCounter]}
+    where: {id: req.params.userId},
+    include: [{
+      model: db.specialization,
+      attributes: ['term']
+    }]
   }).then(function (user) {
-    db.specialization.find({
-      where: {id: req.params.specializationId}
-    }).then(function (specialization) {
-      res.render('user/browseProfile', {user: user, specialization: specialization})
-    })
+      res.json(user)
   })
 })
 
-router.get('/:specializationId/back', function (req, res) {
-  if (req.params.specializationId !== currentSpecializationId) {
-    res.redirect('/')
-  }
-  profileCounter--
 
-  if (profileCounter < 0 || profileCounter >= groupOfUsers.length) {
-    console.log('profile counter out of range')
-    db.specialization.find({
-      where: {id: req.params.specializationId}
-    }).then(function (specialization) {
-      res.render('user/noneFound', {specialization: specialization})
-    })
-  }
-
-  db.user.find({
-    where: {id: groupOfUsers[profileCounter]}
-  }).then(function (user) {
-    db.specialization.find({
-      where: {id: req.params.specializationId}
-    }).then(function (specialization) {
-      res.render('user/browseProfile', {user: user, specialization: specialization})
-    })
-  })
-})
 
 router.post('/:userId/connect', function (req, res) {
   db.friend.findOrCreate({

@@ -103,6 +103,7 @@ $(document).ready(function () {
     $('#delete').empty()
     $('#delete').append("<a href='/user/deleteUser'>Click again to confirm delete</a>")
   })
+  
 })
 
 // to valign and align div

@@ -192,8 +192,12 @@ html, body {
   border-image: linear-gradient(to left, #FF4437 , #241490);
   border-image-slice: 1;
 
+  background: -webkit-linear-gradient(#FF4437 , #241490);
   background: linear-gradient(to left, #FF4437 , #241490);
   -webkit-background-clip: text;
+  background-clip: text;
+
+  /*this line affects safari*/
   -webkit-text-fill-color: transparent;
   text-transform: uppercase;
   font-weight: 700;
@@ -209,4 +213,8 @@ a {
 
 a:hover {
   color: black;
+}
+
+#centralize{
+  position: fixed;
 }
