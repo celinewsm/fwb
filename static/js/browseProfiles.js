@@ -36,7 +36,7 @@ $(document).ready(function () {
       }
       codeToAppend += '</p></div>'
 
-      codeToAppend += '<div class="spacer col s12"></div><div class="col s10 offset-s1 blue-grey lighten-1 white-text profileContact"><div class="spacer col s12"></div><p>Connect with' + user.firstName + 'for contact details.</p></div></div><div class="spacer col s12"></div><div class="center"><form id="connecting"><input type="hidden" name="userId" value="'+ user.id +'"><input id="connectButton" class="gradBtn" type="submit" name="name" value="Connect"></form></div><div class="spacer col s12"></div></div></div>'
+      codeToAppend += '<div class="spacer col s12"></div><div class="col s10 offset-s1 blue-grey lighten-1 white-text profileContact"><div class="spacer col s12"></div><p>Connect with ' + user.firstName + ' for contact details.</p></div></div><div class="spacer col s12"></div><div class="center"><form id="connecting"><input type="hidden" name="userId" value="'+ user.id +'"><input id="connectButton" class="gradBtn" type="submit" name="name" value="Connect"></form></div><div class="spacer col s12"></div></div></div>'
 
         $('#appendUserProfile').empty()
         $('#appendUserProfile').append(codeToAppend)
@@ -102,7 +102,7 @@ $(document).ready(function () {
       }
       codeToAppend += '</p></div>'
 
-      codeToAppend += '<div class="spacer col s12"></div><div class="col s10 offset-s1 blue-grey lighten-1 white-text profileContact"><div class="spacer col s12"></div><p>Connect with' + user.firstName + 'for contact details.</p></div></div><div class="spacer col s12"></div><div class="center"><form id="connecting"><input type="hidden" name="userId" value="'+ user.id +'"><input id="connectButton" class="gradBtn" type="submit" name="name" value="Connect"></form></div><div class="spacer col s12"></div></div></div>'
+      codeToAppend += '<div class="spacer col s12"></div><div class="col s10 offset-s1 blue-grey lighten-1 white-text profileContact"><div class="spacer col s12"></div><p>Connect with ' + user.firstName + ' for contact details.</p></div></div><div class="spacer col s12"></div><div class="center"><form id="connecting"><input type="hidden" name="userId" value="'+ user.id +'"><input id="connectButton" class="gradBtn" type="submit" name="name" value="Connect"></form></div><div class="spacer col s12"></div></div></div>'
 
         $('#appendUserProfile').empty()
         $('#appendUserProfile').append(codeToAppend)
