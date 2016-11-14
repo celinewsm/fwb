@@ -233,8 +233,6 @@ router.get('/contacts', function (req, res) {
 
   }).then(function (friendList) {
 
-    // friendList
-
     console.log("REFACTORED FRIEND LIST OUTPUT>>>",refactoredFriendList)
     // in the instance when user has no friends
     if (friendList.length === 0) {
@@ -254,44 +252,6 @@ router.get('/contacts', function (req, res) {
       res.render('user/contacts', {friends: refactoredFriendList})
 
     }
-    // var tempArray = []
-    // var j = 0
-    // for (var i = 0; i < friendList.length; i++) {
-    //   tempArray.push(friendList[i].fromUserId)
-    //   tempArray.push(friendList[i].toUserId)
-    //   j++
-    //   if (j === friendList.length) {
-    //     console.log('CLEARING J LOOOOOOOOP')
-    //     tempArray = tempArray.unique()
-    //     console.log('req.session.passport.user', req.session.passport.user)
-    //     var indexToRemove = tempArray.indexOf(parseInt(req.session.passport.user, 10))
-    //     tempArray.splice(indexToRemove, 1)
-    //
-    //     var friendsDetails = []
-    //     var l = 0
-    //     for (var k = 0; k < tempArray.length; k++) {
-    //       db.user.find({
-    //         where: {id: tempArray[k]}
-    //       }).then(function (user) {
-    //         friendsDetails.push(user)
-    //         l++
-    //         if (l === tempArray.length) {
-    //           var tempSpecializationList = []
-    //           var m = 0
-    //           for (var n = 0; n < friendsDetails.length; n++) {
-    //             db.specialization.findById(friendsDetails[n].specializationId).then(function (foundSpecialization) {
-    //               tempSpecializationList.push(foundSpecialization.term)
-    //               m++
-    //               if (m === tempArray.length) {
-    //                 res.render('user/contacts', {friends: friendsDetails, specializList: tempSpecializationList})
-    //               }
-    //             })
-    //           }
-    //         }
-    //       })
-    //     }
-    //   }
-    // }
   })
 })
 
