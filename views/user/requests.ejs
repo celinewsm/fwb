@@ -6,20 +6,20 @@
   <div class="col s12 m8 offset-m2 row">
 
   <%  for (var i = 0 ; i < requestsList.length ; i++ ) { %>
-    <div class="toEmpty" id="<%= requestsList[i].id %>">
+    <div class="toEmpty" id="<%= requestsList[i].fromUserDetails.id %>">
       <div class="row card-panel" >
         <div class="col s4 m2">
-          <img class="circle smallProfile" src="<%= requestsList[i].profileImg %>" alt="" />
+          <img class="circle smallProfile" src="<%= requestsList[i].fromUserDetails.profileImg %>" alt="" />
         </div>
         <div class="col s8 m8">
-            <a href="/user/preview/<%= requestsList[i].id %>"><h5><%= requestsList[i].firstName %> <%= requestsList[i].lastName %></h5></a>
-            <a href="/user/<%= requestsList[i].specializationId %>"><p><%= specializList[i] %></p></a>
+            <a href="/user/preview/<%= requestsList[i].fromUserDetails.id %>"><h5><%= requestsList[i].fromUserDetails.firstName %> <%= requestsList[i].fromUserDetails.lastName %></h5></a>
+            <a href="/user/<%= requestsList[i].fromUserDetails.specializationId %>"><p><%= requestsList[i].fromUserDetails.specialization.term %></p></a>
 
         </div>
 
         <div class="col s12 m2 center">
-          <button value="<%= requestsList[i].id %>" class="accept z-depth-1 acceptReject waves-effect" type="button" name="button">Accept</button>
-          <button value="<%= requestsList[i].id %>" class="reject z-depth-1 acceptReject waves-effect" type="button" name="button">Reject</button>
+          <button value="<%= requestsList[i].fromUserDetails.id %>" class="accept z-depth-1 acceptReject waves-effect" type="button" name="button">Accept</button>
+          <button value="<%= requestsList[i].fromUserDetails.id %>" class="reject z-depth-1 acceptReject waves-effect" type="button" name="button">Reject</button>
         </div>
       </div>
     </div>

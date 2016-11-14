@@ -8,6 +8,8 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       associate: function(models) {
         // associations can be defined here
+        models.friend.belongsTo(models.user, {as: 'fromUserDetails',foreignKey: 'fromUserId' })
+        models.friend.belongsTo(models.user, {as: 'toUserDetails', foreignKey: 'toUserId' })
       }
     }
   });

@@ -122,41 +122,6 @@ router.get('/deleteUser', function (req, res) {
   })
 })
 
-router.get('/friendRequests', function (req, res) {
-  var tempRequestList = []
-  db.friend.findAll({
-    where: {
-      toUserId: req.session.passport.user,
-      status: 'pending'
-    }
-  }).then(function (friendRequestsList) {
-    if (friendRequestsList.length === 0) {
-      res.render('user/noRequests')
-    }
-    var j = 0
-    for (var i = 0; i < friendRequestsList.length; i++) {
-      db.user.findById(friendRequestsList[i].fromUserId).then(function (foundUser) {
-        tempRequestList.push(foundUser)
-        j++
-        if (j === friendRequestsList.length) {
-          console.log('tempRequestList>>>>', tempRequestList)
-          var tempSpecializationList = []
-          var l = 0
-          for (var k = 0; k < tempRequestList.length; k++) {
-            db.specialization.findById(tempRequestList[k].specializationId).then(function (foundSpecialization) {
-              tempSpecializationList.push(foundSpecialization.term)
-              l++
-              if (l === tempRequestList.length) {
-                res.render('user/requests', {requestsList: tempRequestList, specializList: tempSpecializationList})
-              }
-            })
-          }
-        }
-      })
-    }
-  })
-})
-
 router.put('/friendRequests/accept', function (req, res) {
   console.log('req.body.userRequestAccepted>>>', req.body.userRequestAccepted)
   db.friend.update({
@@ -190,33 +155,24 @@ router.get('/friendRequests', function (req, res) {
     where: {
       toUserId: req.session.passport.user,
       status: 'pending'
-    }
+    },
+    include: [{
+    model: db.user,
+    as: 'fromUserDetails',
+    attributes: {
+      exclude: ['password']
+    },
+    include: [{
+      model: db.specialization,
+      attributes: ['term'],
+    }]
+  }]
   }).then(function (friendRequestsList) {
+
     if (friendRequestsList.length === 0) {
       res.render('user/noRequests')
-    }
-
-    var j = 0
-    for (var i = 0; i < friendRequestsList.length; i++) {
-      db.user.findById(friendRequestsList[i].fromUserId).then(function (foundUser) {
-        tempRequestList.push(foundUser)
-        j++
-        if (j === friendRequestsList.length) {
-          console.log('tempRequestList>>>>', tempRequestList)
-
-          var tempSpecializationList = []
-          var l = 0
-          for (var k = 0; k < tempRequestList.length; k++) {
-            db.specialization.findById(tempRequestList[k].specializationId).then(function (foundSpecialization) {
-              tempSpecializationList.push(foundSpecialization.term)
-              l++
-              if (l === tempRequestList.length) {
-                res.render('user/requests', {requestsList: tempRequestList, specializList: tempSpecializationList})
-              }
-            })
-          }
-        }
-      })
+    } else {
+      res.render('user/requests', {requestsList: friendRequestsList})
     }
   })
 })

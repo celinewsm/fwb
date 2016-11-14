@@ -71,6 +71,10 @@ module.exports = function (sequelize, DataTypes) {
     classMethods: {
       associate: function (models) {
         models.user.belongsTo(models.specialization)
+
+        models.user.hasMany(models.friend, {foreignKey: 'fromUserId' })
+        models.user.hasMany(models.friend, {foreignKey: 'toUserId' })
+
         // associations can be defined here
       }
     },
