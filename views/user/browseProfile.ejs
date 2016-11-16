@@ -3,89 +3,95 @@
   var currentBrowsingUser = <%- JSON.stringify(user) %>
 </script>
 <% include nav %>
-<div class="center grey-text text-lighten-1">
-  <h5><%= specialization.term %></h5>
-</div>
+<div class="row top-margin">
 
-<div class="arrowLeft z-depth-2" id="backArrow">
-  <!-- <a href="/user/<%= specialization.id %>/back"> -->
-    <i class="material-icons large">keyboard_arrow_left</i>
-  <!-- </a> -->
-</div>
+  <div class="center grey-text text-lighten-1">
+    <h5><%= specialization.term %></h5>
+  </div>
 
-<div class="arrowRight z-depth-2" id="nextArrow">
-  <!-- <a href="/user/<%= specialization.id %>/next"> -->
-    <i class="material-icons large">keyboard_arrow_right</i>
-  <!-- </a> -->
-</div>
+  <div class="arrowLeft z-depth-2" id="backArrow">
+    <!-- <a href="/user/<%= specialization.id %>/back"> -->
+      <i class="material-icons large">keyboard_arrow_left</i>
+    <!-- </a> -->
+  </div>
+
+  <div class="arrowRight z-depth-2" id="nextArrow">
+    <!-- <a href="/user/<%= specialization.id %>/next"> -->
+      <i class="material-icons large">keyboard_arrow_right</i>
+    <!-- </a> -->
+  </div>
 
 
 
-<div id="appendUserProfile">
-  <div class="row">
-    <div class="col s12 m6 l4 offset-l2">
-      <div class="spacer">
-      </div>
-        <div class="carousel carousel-slider" data-indicators="true">
-            <img class="carousel-item carouselImg" src="<%= user.profileImg %>">
-        <%  if(user.img1){ %>
-            <img class="carousel-item carouselImg" src="<%= user.img1 %>">
-        <%  } %>
-        <%  if(user.img2){ %>
-            <img class="carousel-item carouselImg" src="<%= user.img2 %>">
-        <%  } %>
-        <%  if(user.img3){ %>
-            <img class="carousel-item carouselImg" src="<%= user.img3 %>">
-        <%  } %>
+  <div id="appendUserProfile">
+    <div class="row">
+      <div class="col s12 m6 l4 offset-l2">
+        <div class="spacer">
         </div>
-    </div>
-
-    <div class="col s12 m6 l4">
-      <div class="col s12">
-        <h5 class="center">
-          <%= user.firstName %>
-        </h5>
+          <div class="carousel carousel-slider" data-indicators="true">
+              <img class="carousel-item carouselImg" src="<%= user.profileImg %>">
+          <%  if(user.img1){ %>
+              <img class="carousel-item carouselImg" src="<%= user.img1 %>">
+          <%  } %>
+          <%  if(user.img2){ %>
+              <img class="carousel-item carouselImg" src="<%= user.img2 %>">
+          <%  } %>
+          <%  if(user.img3){ %>
+              <img class="carousel-item carouselImg" src="<%= user.img3 %>">
+          <%  } %>
+          </div>
       </div>
-      <div class="col s12 center">
-        <p>
-          <i><%= user.bio %></i>
-          <%  if (!user.bio) { %>
-            <%= user.firstName %> left the bio empty <br/> (╯°□°)╯︵ ┻━┻
-          <%  } %>
-        </p>
-        <div class="col s10 offset-s1 blue-grey lighten-5">
+
+      <div class="col s12 m6 l4">
+        <div class="col s12">
+          <h5 class="center">
+            <%= user.firstName %>
+          </h5>
+        </div>
+        <div class="col s12 center">
           <p>
-            Skills:<br/><%= user.skills %>
-          <%  if (!user.skills) { %>
-            <%= user.firstName %> seems to have decided to leave this empty <br/> ¯\_(ツ)_/¯
-          <%  } %>
+            <i><%= user.bio %></i>
+            <%  if (!user.bio) { %>
+              <%= user.firstName %> left the bio empty <br/> (╯°□°)╯︵ ┻━┻
+            <%  } %>
           </p>
+          <div class="col s10 offset-s1 blue-grey lighten-5">
+            <p>
+              Skills:<br/><%= user.skills %>
+            <%  if (!user.skills) { %>
+              <%= user.firstName %> seems to have decided to leave this empty <br/> ¯\_(ツ)_/¯
+            <%  } %>
+            </p>
+          </div>
+          <div class="spacer col s12">
+          </div>
+          <div class="col s10 offset-s1 blue-grey lighten-1 white-text profileContact">
+            <div class="spacer col s12">
+            </div>
+            <p>
+              Connect with <%= user.firstName %> for contact details.
+            </p>
+          </div>
         </div>
         <div class="spacer col s12">
         </div>
-        <div class="col s10 offset-s1 blue-grey lighten-1 white-text profileContact">
-          <div class="spacer col s12">
-          </div>
-          <p>
-            Connect with <%= user.firstName %> for contact details.
-          </p>
-        </div>
+      <div class="center">
+
+        <form id="connecting">
+          <input type="hidden" name="userId" value="<%= user.id %>">
+          <input id="connectButton" class="gradBtn" type="submit" name="name" value="Connect">
+        </form>
       </div>
+
       <div class="spacer col s12">
       </div>
-    <div class="center">
 
-      <form id="connecting">
-        <input type="hidden" name="userId" value="<%= user.id %>">
-        <input id="connectButton" class="gradBtn" type="submit" name="name" value="Connect">
-      </form>
-    </div>
-
-    <div class="spacer col s12">
-    </div>
-
+      </div>
     </div>
   </div>
+
+
 </div>
+
 
 <script src="/js/browseProfiles.js"></script>
