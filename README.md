@@ -1,7 +1,7 @@
 Friends With Benefits (FWB)
 ===================
 
-*FWB* A social networking site where you get can to know potential business partners, collaborators or simply make friends based on their skill sets. Contacts are EVERYTHING.
+A social networking site where you get can to know potential business partners, collaborators or simply make friends based on their skill sets. Contacts are EVERYTHING.
 
 ----------
 
